@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration page</title>
+</head>
+<h1>User registration</h1>
+<body>
+<form action="#" th:action="@{/users/add}" th:object="${userDTO}" method="post">
+    <table>
+        <tr>
+            <td><b>Enter first name:</b><br>
+                <label>
+                    <input type="text" th:field="*{firstName}">
+                </label></td>
+            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</td>
+        </tr>
+        <tr>
+            <td><b>Enter last name:</b><br>
+                <label>
+                    <input type="text" th:field="*{lastName}">
+                </label></td>
+            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</td>
+        </tr>
+        <tr>
+            <td><b>Enter patronymic:</b><br>
+                <label>
+                    <input type="text" th:field="*{patronymic}">
+                </label></td>
+            <td th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">Name Error</td>
+        </tr>
+        <tr>
+            <td><b>Enter email:</b><br>
+                <label>
+                    <input type="text" th:field="*{username}">
+                </label></td>
+            <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td>
+        </tr>
+        <tr>
+            <td><b>Choose role:</b></td>
+            <td>
+                <label>
+                    <select th:object="${roles}" th:name="role">
+                        <option th:each="role : ${roles}"
+                                th:value="${role.name}"
+                                th:utext="${role.name}"></option>
+                    </select>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Register!</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
