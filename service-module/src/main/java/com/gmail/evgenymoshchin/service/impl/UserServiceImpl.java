@@ -6,9 +6,12 @@ import com.gmail.evgenymoshchin.repository.model.Role;
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 import com.gmail.evgenymoshchin.repository.model.User;
 import com.gmail.evgenymoshchin.service.UserService;
+import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,9 @@ import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Random RANDOM = new Random();
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -36,8 +41,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void addUser(UserDTO userDTO) {
-        userRepository.persist(convertDTOtoUser(userDTO));
+    public void addUser(UserDTO userDTO) throws UserAlreadyExistException {
+        if (emailExist(userDTO.getUsername())) {
+            throw new UserAlreadyExistException("There is an user with that email: "
+                    + userDTO.getUsername());
+        } else {
+            userRepository.persist(convertDTOtoUser(userDTO));
+        }
     }
 
     @Override
@@ -64,6 +74,39 @@ public class UserServiceImpl implements UserService {
         userRepository.remove(user);
     }
 
+    @Override
+    @Transactional
+    public UserDTO findUserById(Long id) {
+        User user = userRepository.findById(id);
+        return convertUserToDTO(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRoleById(Long id, RoleEnum roleEnum) {
+        User user = userRepository.findById(id);
+        Role role = roleRepository.findByRoleByName(roleEnum);
+        user.setRole(role);
+    }
+
+    @Override
+    @Transactional
+    public void updatePasswordById(Long id) {
+        User user = userRepository.findById(id);
+        String generatedPassword = generateRandomPassword();
+        logger.info("New password for user {} is {}", user.getUsername(), generatedPassword);
+        user.setPassword(passwordEncoder.encode(generatedPassword));
+    }
+
+    private boolean emailExist(String username) {
+        return userRepository.findByUsername(username) != null;
+    }
+
+//    @Override
+//    public boolean existByUsername(String username) {
+//        return userRepository.existByUsername(username);
+//    }
+
     private UserDTO convertUserToDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
@@ -84,14 +127,13 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDTO.getUsername());
         Role role = roleRepository.findByRoleByName(userDTO.getRole());
         String generatedPassword = generateRandomPassword();
-        logger.info(generatedPassword);
+        logger.info("Password for user {} is {}", user.getUsername(), generatedPassword);
         user.setPassword(passwordEncoder.encode(generatedPassword));
         user.setRole(role);
         return user;
     }
 
     private String generateRandomPassword() {
-        Random random = new Random();
-        return "user" + random.nextInt(100);
+        return "user" + RANDOM.nextInt(100);
     }
 }

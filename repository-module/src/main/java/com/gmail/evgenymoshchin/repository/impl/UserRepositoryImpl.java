@@ -29,4 +29,11 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
             return null;
         }
     }
+
+    @Override
+    public boolean existByUsername(String username) {
+        Query query = entityManager.createQuery(FIND_USER_WITH_ROLE_BY_USERNAME_QUERY);
+        query.setParameter(USERNAME_VALUE, username);
+        return query.getSingleResult() != null;
+    }
 }

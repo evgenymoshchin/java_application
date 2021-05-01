@@ -4,11 +4,22 @@ import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserDTO {
     private Long id;
+    @NotNull
+    @NotEmpty
+    @Size(max = 20)
     private String firstName;
+    @NotNull
+    @NotEmpty
+    @Size(max = 40)
     private String lastName;
+    @NotNull
+    @NotEmpty
+    @Size(max = 40)
     private String patronymic;
     @NotEmpty
     @Email(message = "Email should be valid")

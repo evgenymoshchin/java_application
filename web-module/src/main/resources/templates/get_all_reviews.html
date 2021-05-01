@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Reviews</title>
+</head>
+<body>
+<h1>List of reviews</h1>
+<form>
+    <table border="1">
+        <tr>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>patronymic</th>
+            <th>review</th>
+            <th>date</th>
+            <th>show?</th>
+            <th>to delete</th>
+        </tr>
+        <tr th:each="review:${reviews}">
+            <td th:text="${review.firstName}"></td>
+            <td th:text="${review.lastName}"></td>
+            <td th:text="${review.patronymic}"></td>
+            <td th:text="${review.reviewBody}"></td>
+            <td th:text="${review.date}"></td>
+            <td>
+                <label>
+                    <label>
+                        <input type="checkbox" th:value="*{review.shown}"/>
+                    </label>
+                </label>
+            </td>
+            <td>
+                <a th:href="@{/reviews/remove/{id}(id=${review.id})}"><span>Delete</span></a>
+            </td>
+        </tr>
+    </table>
+</form>
+<br>
+</body>
+</html>
