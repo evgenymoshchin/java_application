@@ -3,8 +3,6 @@ package com.gmail.evgenymoshchin.service;
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 import com.gmail.evgenymoshchin.repository.model.User;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -17,7 +15,7 @@ public interface UserService {
 
     void removeUserById(Long id);
 
-    UserDTO findUserById(Long id);
+//    UserDTO findUserById(Long id);
 
     void updateUserRoleById(Long id, RoleEnum roleEnum);
 

@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.gmail.evgenymoshchin.web.config.handlers.ConfigConstant.ACCESS_DENIED_URL;
 import static com.gmail.evgenymoshchin.web.config.handlers.ConfigConstant.ADMIN_VALUE;
-import static com.gmail.evgenymoshchin.web.config.handlers.ConfigConstant.USER_VALUE;
 
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
@@ -30,11 +29,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users/get")
+                .antMatchers("/users/**", "/reviews/**")
                 .hasRole(ADMIN_VALUE)
-                .antMatchers("/items/get", "/items/add", "/items/show-item-with-shop", "/api/items")
-                .hasRole(USER_VALUE)
-                .antMatchers("/login", "/users/add", "/", ACCESS_DENIED_URL)
+                .antMatchers("/login", "/", ACCESS_DENIED_URL)
                 .permitAll()
                 .and()
                 .formLogin()

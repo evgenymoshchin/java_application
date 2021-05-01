@@ -52,6 +52,7 @@ public class UserController {
                 userService.addUser(userDTO);
                 return "redirect:/users/get";
             } catch (UserAlreadyExistException exception) {
+                logger.error(exception.getMessage(), exception);
                 model.addAttribute("error", EXIST_USER_MESSAGE);
                 return "add_user";
             }
