@@ -10,4 +10,6 @@ public interface GenericRepository<I, T> {
     T findById(I id);
 
     List<T> findAll();
+
+    List<T> findWithPagination(int limitPerPage, int page, String entity);
 }

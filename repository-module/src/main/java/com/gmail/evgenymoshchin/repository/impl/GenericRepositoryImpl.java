@@ -44,4 +44,18 @@ public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I
         Query query = entityManager.createQuery(queryString);
         return query.getResultList();
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<T> findWithPagination(int limitPerPage, int page, String entity) {
+        String sql = "SELECT t FROM " + entity + " t";
+        Query query = entityManager.createQuery(sql)
+                .setFirstResult(calculateOffset(page, limitPerPage))
+                .setMaxResults(limitPerPage);
+        return query.getResultList();
+    }
+
+    private int calculateOffset(int page, int limit) {
+        return ((limit * page) - limit);
+    }
 }

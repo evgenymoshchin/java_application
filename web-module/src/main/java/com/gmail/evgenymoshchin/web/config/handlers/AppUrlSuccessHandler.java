@@ -11,16 +11,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gmail.evgenymoshchin.web.config.handlers.ConfigConstant.ADMIN_URL;
-import static com.gmail.evgenymoshchin.web.config.handlers.ConfigConstant.USER_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ADMIN_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.CUSTOMER_USER_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.SALE_USER_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.SECURE_API_USER_URL;
 
 public class AppUrlSuccessHandler implements AuthenticationSuccessHandler {
 
     private final Map<RoleEnum, String> roleMap = new HashMap<>() {{
         put(RoleEnum.ROLE_ADMINISTRATOR, ADMIN_URL);
-        put(RoleEnum.ROLE_SALE_USER, USER_URL);
-        put(RoleEnum.ROLE_CUSTOMER_USER, USER_URL);
-        put(RoleEnum.ROLE_SECURE_API_USER, USER_URL);
+        put(RoleEnum.ROLE_SALE_USER, SALE_USER_URL);
+        put(RoleEnum.ROLE_CUSTOMER_USER, CUSTOMER_USER_URL);
+        put(RoleEnum.ROLE_SECURE_API_USER, SECURE_API_USER_URL);
     }};
 
     private String getRedirectionUrl(RoleEnum name) {

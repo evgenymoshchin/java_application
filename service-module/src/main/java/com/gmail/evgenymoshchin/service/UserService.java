@@ -15,9 +15,9 @@ public interface UserService {
 
     void removeUserById(Long id);
 
-//    UserDTO findUserById(Long id);
-
     void updateUserRoleById(Long id, RoleEnum roleEnum);
 
     void updatePasswordById(Long id);
+
+    List<UserDTO> findUsersWithPagination(int limitPerPage, int page, String entity);
 }

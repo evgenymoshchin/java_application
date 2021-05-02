@@ -11,8 +11,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.gmail.evgenymoshchin.web.config.handlers.ConfigConstant.ACCESS_DENIED_URL;
-import static com.gmail.evgenymoshchin.web.config.handlers.ConfigConstant.ADMIN_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ACCESS_DENIED_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ADMIN_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.DEFAULT_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.LOGIN_PAGE_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.REVIEWS_CONTROLLER_MAPPING_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.USERS_CONTROLLER_MAPPING_URL;
 
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
@@ -29,13 +33,13 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users/**", "/reviews/**")
+                .antMatchers(USERS_CONTROLLER_MAPPING_URL, REVIEWS_CONTROLLER_MAPPING_URL)
                 .hasRole(ADMIN_VALUE)
-                .antMatchers("/login", "/", ACCESS_DENIED_URL)
+                .antMatchers(LOGIN_PAGE_URL, DEFAULT_URL, ACCESS_DENIED_URL)
                 .permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage(LOGIN_PAGE_URL)
                 .successHandler(new AppUrlSuccessHandler())
                 .permitAll()
                 .and()

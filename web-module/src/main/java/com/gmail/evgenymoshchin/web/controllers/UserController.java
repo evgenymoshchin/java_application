@@ -23,12 +23,30 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ADD_USERS_MAPPING_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ADD_USER_VIEW_NAME_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ERROR_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.EXIST_USER_MESSAGE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.GET_USERS_MAPPING_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.GET_USERS_VIEW_NAME_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.REMOVE_USER_MAPPING_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ROLES_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ROLE_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.SELECTED_USERS_PARAMETER_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.UPDATE_USER_PASSWORD_URL_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.UPDATE_USER_ROLE_MAPPING_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.UPDATE_USER_VIEW_NAME_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.USERS_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.USERS_GET_REDIRECTION_PATH_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.USER_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.USER_CONTROLLER_MAPPING_VALUE;
+
 @Controller
-@RequestMapping("/users")
+@RequestMapping(USER_CONTROLLER_MAPPING_VALUE)
 public class UserController {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-    public static final String EXIST_USER_MESSAGE = "An user for that email is already exists.";
+
 
     private final UserService userService;
     private final RoleService roleService;
@@ -38,30 +56,30 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/add")
+    @GetMapping(ADD_USERS_MAPPING_VALUE)
     public String addUserPage(UserDTO userDTO, Model model) {
-        model.addAttribute("roles", roleService.findAll());
-        return "add_user";
+        model.addAttribute(ROLES_ATTRIBUTE_VALUE, roleService.findAll());
+        return ADD_USER_VIEW_NAME_VALUE;
     }
 
-    @PostMapping("/add")
+    @PostMapping(ADD_USERS_MAPPING_VALUE)
     public String addUser(@Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute(ROLES_ATTRIBUTE_VALUE, roleService.findAll());
         if (!bindingResult.hasErrors()) {
             try {
                 userService.addUser(userDTO);
-                return "redirect:/users/get";
+                return USERS_GET_REDIRECTION_PATH_VALUE;
             } catch (UserAlreadyExistException exception) {
                 logger.error(exception.getMessage(), exception);
-                model.addAttribute("error", EXIST_USER_MESSAGE);
-                return "add_user";
+                model.addAttribute(ERROR_ATTRIBUTE_VALUE, EXIST_USER_MESSAGE_VALUE);
+                return ADD_USER_VIEW_NAME_VALUE;
             }
         } else {
-            return "add_user";
+            return ADD_USER_VIEW_NAME_VALUE;
         }
     }
 
-    @GetMapping("/get")
+    @GetMapping(GET_USERS_MAPPING_VALUE)
     public String getAllUsers(Model model, Principal principal) {
         List<UserDTO> users = userService.findAll();
         List<UserDTO> usersWithoutCurrent = new ArrayList<>();
@@ -71,36 +89,38 @@ public class UserController {
             }
         }
         usersWithoutCurrent.sort(Comparator.comparing(UserDTO::getUsername));
-        model.addAttribute("users", usersWithoutCurrent);
-        return "get_all_users";
+        model.addAttribute(USERS_ATTRIBUTE_VALUE, usersWithoutCurrent);
+        return GET_USERS_VIEW_NAME_VALUE;
     }
 
-    @PostMapping("/remove")
-    public String removeUserById(@RequestParam(value = "selectedUsers", required = false) List<Long> ids) {
+    @PostMapping(REMOVE_USER_MAPPING_VALUE)
+    public String removeUserById(@RequestParam(value = SELECTED_USERS_PARAMETER_VALUE,
+            required = false) List<Long> ids) {
         if (ids != null) {
             for (Long id : ids) {
                 userService.removeUserById(id);
             }
         }
-        return "redirect:/users/get";
+        return USERS_GET_REDIRECTION_PATH_VALUE;
     }
 
-    @GetMapping("/update-role/{id}")
+    @GetMapping(UPDATE_USER_ROLE_MAPPING_VALUE)
     public String getUpdateUserRolePage(@PathVariable Long id, Model model, UserDTO userDTO) {
-        model.addAttribute("roles", roleService.findAll());
-        model.addAttribute("user", userDTO);
-        return "update_user";
+        model.addAttribute(ROLES_ATTRIBUTE_VALUE, roleService.findAll());
+        model.addAttribute(USER_ATTRIBUTE_VALUE, userDTO);
+        return UPDATE_USER_VIEW_NAME_VALUE;
     }
 
-    @PostMapping("/update-role/{id}")
-    public String updateUserRoleById(@PathVariable Long id, @RequestParam(value = "role") RoleEnum roleEnum) {
+    @PostMapping(UPDATE_USER_ROLE_MAPPING_VALUE)
+    public String updateUserRoleById(@PathVariable Long id,
+                                     @RequestParam(value = ROLE_ATTRIBUTE_VALUE) RoleEnum roleEnum) {
         userService.updateUserRoleById(id, roleEnum);
-        return "redirect:/users/get";
+        return USERS_GET_REDIRECTION_PATH_VALUE;
     }
 
-    @GetMapping("/update-password/{id}")
+    @GetMapping(UPDATE_USER_PASSWORD_URL_VALUE)
     public String updatePasswordById(@PathVariable Long id) {
         userService.updatePasswordById(id);
-        return "redirect:/users/get";
+        return USERS_GET_REDIRECTION_PATH_VALUE;
     }
 }

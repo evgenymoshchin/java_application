@@ -2,39 +2,41 @@ package com.gmail.evgenymoshchin.web.controllers;
 
 import com.gmail.evgenymoshchin.service.ReviewService;
 import com.gmail.evgenymoshchin.service.model.ReviewDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+import static com.gmail.evgenymoshchin.web.constants.ReviewControllerConstants.GET_ALL_REVIEWS_MAPPING_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ReviewControllerConstants.GET_ALL_REVIEWS_VIEW_NAME_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ReviewControllerConstants.REDIRECTION_REVIEWS_GET_PATH_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ReviewControllerConstants.REMOVE_REVIEW_MAPPING_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ReviewControllerConstants.REVIEWS_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ReviewControllerConstants.REVIEW_CONTROLLER_MAPPING_VALUE;
+
 @Controller
-@RequestMapping("/reviews")
+@RequestMapping(REVIEW_CONTROLLER_MAPPING_VALUE)
 public class ReviewController {
 
     private final ReviewService reviewService;
-
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
-    @GetMapping("/get")
+    @GetMapping(GET_ALL_REVIEWS_MAPPING_VALUE)
     public String getAllReviews(Model model) {
         List<ReviewDTO> reviews = reviewService.findAll();
-        model.addAttribute("reviews", reviews);
-        return "get_all_reviews";
+        model.addAttribute(REVIEWS_ATTRIBUTE_VALUE, reviews);
+        return GET_ALL_REVIEWS_VIEW_NAME_VALUE;
     }
 
-    @GetMapping("/remove/{id}")
+    @GetMapping(REMOVE_REVIEW_MAPPING_VALUE)
     public String removeReview(@PathVariable Long id) {
         reviewService.removeById(id);
-        return "redirect:/reviews/get";
+        return REDIRECTION_REVIEWS_GET_PATH_VALUE;
     }
 }

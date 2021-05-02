@@ -5,6 +5,7 @@ import com.gmail.evgenymoshchin.repository.UserRepository;
 import com.gmail.evgenymoshchin.repository.model.Role;
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 import com.gmail.evgenymoshchin.repository.model.User;
+import com.gmail.evgenymoshchin.service.PasswordService;
 import com.gmail.evgenymoshchin.service.UserService;
 import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
@@ -19,25 +20,32 @@ import javax.transaction.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MAIL_PASSWORD_CHANGE_NOTIFICATION_VALUE;
+import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MAIL_TEXT_NOTIFICATION_VALUE;
+import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.SUCCESSFUL_MAIL_MESSAGE;
+import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.USER_EXIST_EXCEPTION_MESSAGE_VALUE;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-    private static final Random RANDOM = new Random();
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordService passwordService;
     private final JavaMailSender javaMailSender;
 
     public UserServiceImpl(PasswordEncoder passwordEncoder,
                            UserRepository userRepository,
-                           RoleRepository roleRepository, JavaMailSender javaMailSender) {
+                           RoleRepository roleRepository,
+                           PasswordService passwordService,
+                           JavaMailSender javaMailSender) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordService = passwordService;
         this.javaMailSender = javaMailSender;
     }
 
@@ -45,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addUser(UserDTO userDTO) throws UserAlreadyExistException {
         if (emailExist(userDTO.getUsername())) {
-            throw new UserAlreadyExistException("There is an user with that email: "
+            throw new UserAlreadyExistException(USER_EXIST_EXCEPTION_MESSAGE_VALUE
                     + userDTO.getUsername());
         } else {
             userRepository.persist(convertDTOtoUser(userDTO));
@@ -76,13 +84,6 @@ public class UserServiceImpl implements UserService {
         userRepository.remove(user);
     }
 
-//    @Override
-//    @Transactional
-//    public UserDTO findUserById(Long id) {
-//        User user = userRepository.findById(id);
-//        return convertUserToDTO(user);
-//    }
-
     @Override
     @Transactional
     public void updateUserRoleById(Long id, RoleEnum roleEnum) {
@@ -95,13 +96,20 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updatePasswordById(Long id) {
         User user = userRepository.findById(id);
-        String generatedPassword = generateRandomPassword();
-        logger.info("New password for user {} is {}", user.getUsername(), generatedPassword);
+        String generatedPassword = passwordService.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(generatedPassword));
+        sendEmail(user.getUsername(), generatedPassword);
     }
 
-    private boolean emailExist(String username) {
-        return userRepository.findByUsername(username) != null;
+    @Override
+    @Transactional
+    public List<UserDTO> findUsersWithPagination(int limitPerPage, int page, String entity) {
+        List<User> users = userRepository.findWithPagination(limitPerPage, page, entity);
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for (User user : users) {
+            userDTOS.add(convertUserToDTO(user));
+        }
+        return userDTOS;
     }
 
     private UserDTO convertUserToDTO(User user) {
@@ -123,23 +131,23 @@ public class UserServiceImpl implements UserService {
         user.setPatronymic(userDTO.getPatronymic());
         user.setUsername(userDTO.getUsername());
         Role role = roleRepository.findByRoleByName(userDTO.getRole());
-        String generatedPassword = generateRandomPassword();
-        logger.info("Password for user {} is {}", user.getUsername(), generatedPassword);
-        sendSimpleEmail(userDTO.getUsername(), generatedPassword);
-        user.setPassword(passwordEncoder.encode(generatedPassword));
         user.setRole(role);
+        String generatedPassword = passwordService.generateRandomPassword();
+        user.setPassword(passwordEncoder.encode(generatedPassword));
+        sendEmail(userDTO.getUsername(), generatedPassword);
         return user;
     }
 
-    private String generateRandomPassword() {
-        return "user" + RANDOM.nextInt(100);
+    private boolean emailExist(String username) {
+        return userRepository.findByUsername(username) != null;
     }
 
-    private void sendSimpleEmail(String username, String password) {
+    private void sendEmail(String username, String password) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(username);
-        message.setSubject("Password for user " + username + " is " + password);
-        message.setText(password);
+        message.setSubject(MAIL_PASSWORD_CHANGE_NOTIFICATION_VALUE);
+        message.setText(String.format(MAIL_TEXT_NOTIFICATION_VALUE, username, password));
         javaMailSender.send(message);
+        logger.info(SUCCESSFUL_MAIL_MESSAGE, username);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 import static com.gmail.evgenymoshchin.repository.impl.constant.QueryConstants.FIND_USER_WITH_ROLE_BY_USERNAME_QUERY;
 import static com.gmail.evgenymoshchin.repository.impl.constant.QueryConstants.USERNAME_VALUE;
@@ -30,3 +31,4 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
         }
     }
 }
+

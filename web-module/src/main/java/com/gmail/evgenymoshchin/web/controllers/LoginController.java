@@ -3,11 +3,14 @@ package com.gmail.evgenymoshchin.web.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import static com.gmail.evgenymoshchin.web.constants.DeniedAndLoginControllersConstants.LOGIN_PAGE_MAPPING_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.DeniedAndLoginControllersConstants.LOGIN_VIEW_NAME_VALUE;
+
 @Controller
 public class LoginController {
 
-    @GetMapping("/login")
+    @GetMapping(LOGIN_PAGE_MAPPING_VALUE)
     public String getLoginPage() {
-        return "login";
+        return LOGIN_VIEW_NAME_VALUE;
     }
 }
