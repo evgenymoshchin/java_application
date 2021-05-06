@@ -9,6 +9,7 @@ import com.gmail.evgenymoshchin.service.PasswordService;
 import com.gmail.evgenymoshchin.service.UserService;
 import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
+import com.gmail.evgenymoshchin.service.model.UserPageDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,7 +20,11 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MAIL_PASSWORD_CHANGE_NOTIFICATION_VALUE;
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MAIL_TEXT_NOTIFICATION_VALUE;
@@ -68,17 +73,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserDTO> findAll() {
-        List<User> users = userRepository.findAll();
-        List<UserDTO> userDTOS = new ArrayList<>();
-        for (User user : users) {
-            userDTOS.add(convertUserToDTO(user));
-        }
-        return userDTOS;
-    }
-
-    @Override
-    @Transactional
     public void removeUserById(Long id) {
         User user = userRepository.findById(id);
         userRepository.remove(user);
@@ -99,17 +93,27 @@ public class UserServiceImpl implements UserService {
         String generatedPassword = passwordService.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(generatedPassword));
         sendEmail(user.getUsername(), generatedPassword);
+        logger.info(SUCCESSFUL_MAIL_MESSAGE, user.getUsername());
     }
 
     @Override
     @Transactional
-    public List<UserDTO> findUsersWithPagination(int limitPerPage, int page, String entity) {
-        List<User> users = userRepository.findWithPagination(limitPerPage, page, entity);
+    public UserPageDTO findUsersWithPagination(Integer pageNumber, Integer pageSize) {
+        UserPageDTO userPage = new UserPageDTO();
+        List<User> users = userRepository.findWithPagination(pageNumber, pageSize);
         List<UserDTO> userDTOS = new ArrayList<>();
         for (User user : users) {
             userDTOS.add(convertUserToDTO(user));
         }
-        return userDTOS;
+        userDTOS.sort(Comparator.comparing(UserDTO::getUsername));
+        userPage.getUsers().addAll(userDTOS);
+        Long countOfUsers = userRepository.getCount();
+        userPage.setPagesCount(countOfUsers);
+        List<Integer> numbersOfPages = IntStream.rangeClosed(1, Math.toIntExact(countOfUsers / pageSize + 1))
+                .boxed()
+                .collect(Collectors.toList());
+        userPage.getNumbersOfPages().addAll(numbersOfPages);
+        return userPage;
     }
 
     private UserDTO convertUserToDTO(User user) {
@@ -119,8 +123,10 @@ public class UserServiceImpl implements UserService {
         userDTO.setLastName(user.getLastName());
         userDTO.setPatronymic((user.getPatronymic()));
         userDTO.setUsername(user.getUsername());
-        RoleEnum roleEnum = (user.getRole().getName());
-        userDTO.setRole(roleEnum);
+        if (Objects.nonNull(user.getRole())) {
+            RoleEnum roleEnum = (user.getRole().getName());
+            userDTO.setRole(roleEnum);
+        }
         return userDTO;
     }
 
@@ -147,7 +153,6 @@ public class UserServiceImpl implements UserService {
         message.setTo(username);
         message.setSubject(MAIL_PASSWORD_CHANGE_NOTIFICATION_VALUE);
         message.setText(String.format(MAIL_TEXT_NOTIFICATION_VALUE, username, password));
-        javaMailSender.send(message);
-        logger.info(SUCCESSFUL_MAIL_MESSAGE, username);
+//        javaMailSender.send(message);
     }
 }

@@ -1,6 +1,7 @@
 package com.gmail.evgenymoshchin.web.config;
 
 import com.gmail.evgenymoshchin.web.config.handlers.AppUrlSuccessHandler;
+import com.gmail.evgenymoshchin.web.constants.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ACCESS_DENIED_URL;
-import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ADMIN_VALUE;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.DEFAULT_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.LOGIN_PAGE_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.REVIEWS_CONTROLLER_MAPPING_URL;
@@ -34,7 +34,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(USERS_CONTROLLER_MAPPING_URL, REVIEWS_CONTROLLER_MAPPING_URL)
-                .hasRole(ADMIN_VALUE)
+                .hasRole(RoleEnum.ADMINISTRATOR.name())
                 .antMatchers(LOGIN_PAGE_URL, DEFAULT_URL, ACCESS_DENIED_URL)
                 .permitAll()
                 .and()

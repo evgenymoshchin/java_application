@@ -3,15 +3,12 @@ package com.gmail.evgenymoshchin.service;
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 import com.gmail.evgenymoshchin.repository.model.User;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
-
-import java.util.List;
+import com.gmail.evgenymoshchin.service.model.UserPageDTO;
 
 public interface UserService {
     void addUser(UserDTO userDTO);
 
     User findUserByUsername(String username);
-
-    List<UserDTO> findAll();
 
     void removeUserById(Long id);
 
@@ -19,5 +16,5 @@ public interface UserService {
 
     void updatePasswordById(Long id);
 
-    List<UserDTO> findUsersWithPagination(int limitPerPage, int page, String entity);
+    UserPageDTO findUsersWithPagination(Integer pageNumber, Integer pageSize);
 }

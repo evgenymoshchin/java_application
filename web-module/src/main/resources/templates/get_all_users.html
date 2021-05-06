@@ -17,17 +17,17 @@
             <th>update</th>
             <th>to delete</th>
         </tr>
-        <tr th:each="user:${users}">
+        <tr th:each="user:${userPage.users}">
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.patronymic}"></td>
             <td th:text="${user.username}"></td>
             <td th:text="${user.role}"></td>
             <td>
-                <a th:href="@{/users/update-role/{id}(id=${user.id})}"><span>ROLE</span></a>
+                <a th:if="${user.id} != 1" th:href="@{/users/update-role/{id}(id=${user.id})}"><span>ROLE</span></a>
                 <a th:href="@{/users/update-password/{id}(id=${user.id})}"><span>PASSWORD</span></a>
             </td>
-            <td>
+            <td th:if="${user.id} != 1">
                 <label>
                     <label>
                         <input type="checkbox" th:name="selectedUsers" th:value="*{user.id}"/>
@@ -36,6 +36,12 @@
             </td>
         </tr>
     </table>
+    <td th:if="${userPage.pagesCount gt 0}"
+        th:each="pageNumber : ${userPage.numbersOfPages}">
+        <a th:href="@{'/users/get?page=' + ${pageNumber}}"
+           th:text="${pageNumber}"
+           th:name="page" th:value="${pageNumber}"> </a>
+    </td>
     <tr>
         <br>
         <td>

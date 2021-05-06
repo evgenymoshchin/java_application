@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>List of reviews</h1>
-<form>
+<form th:action="@{/reviews/change}" method="post">
     <table border="1">
         <tr>
             <th>firstName</th>
@@ -17,7 +17,7 @@
             <th>show?</th>
             <th>to delete</th>
         </tr>
-        <tr th:each="review:${reviews}">
+        <tr th:each="review:${reviewPage.reviews}">
             <td th:text="${review.firstName}"></td>
             <td th:text="${review.lastName}"></td>
             <td th:text="${review.patronymic}"></td>
@@ -26,7 +26,9 @@
             <td>
                 <label>
                     <label>
-                        <input type="checkbox" th:value="*{review.shown}"/>
+                        <input type="checkbox" th:name="selectedReviews" th:value="${review.id}"
+                               th:checked="${review.isVisible eq true}"/>
+                        <input type="hidden" th:name="allIds" th:value="${review.id}"/>
                     </label>
                 </label>
             </td>
@@ -35,6 +37,18 @@
             </td>
         </tr>
     </table>
+    <td th:if="${reviewPage.pagesCount gt 0}"
+        th:each="pageNumber : ${reviewPage.numbersOfPages}">
+        <a th:href="@{'/reviews/get?page=' + ${pageNumber}}"
+           th:text="${pageNumber}"
+           th:name="page" th:value="${pageNumber}"> </a>
+    </td>
+    <tr>
+        <br>
+        <td>
+            <button type="submit">Change visibility!</button>
+        </td>
+    </tr>
 </form>
 <br>
 </body>

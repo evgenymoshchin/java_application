@@ -11,5 +11,7 @@ public interface GenericRepository<I, T> {
 
     List<T> findAll();
 
-    List<T> findWithPagination(int limitPerPage, int page, String entity);
+    List<T> findWithPagination(Integer pageNumber, Integer pageSize);
+
+    Long getCount();
 }

@@ -1,76 +1,34 @@
 package com.gmail.evgenymoshchin.service.model;
 
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+@Data
 public class UserDTO {
     private Long id;
     @NotNull
     @NotEmpty
     @Size(max = 20)
+    @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
     private String firstName;
     @NotNull
     @NotEmpty
     @Size(max = 40)
+    @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
     private String lastName;
     @NotNull
     @NotEmpty
     @Size(max = 40)
+    @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
     private String patronymic;
     @NotEmpty
     @Email(message = "Email should be valid")
     private String username;
     private RoleEnum role;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public RoleEnum getRole() {
-        return role;
-    }
-
-    public void setRole(RoleEnum role) {
-        this.role = role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }
