@@ -44,8 +44,8 @@ public class ReviewController {
     }
 
     @PostMapping("/change")
-    public String changeVisibilityById(@RequestParam(value = "selectedReviews", required = false) List<Long> ids,
-                                       @RequestParam(value = "allIds", required = false) List<Long> allIds) {
+    public String changeVisibilityById(@RequestParam(value = "selectedReviews") List<Long> ids,
+                                       @RequestParam(value = "allIds") List<Long> allIds) {
         if (ids != null) {
             allIds.removeAll(ids);
             logger.info(allIds.toString());

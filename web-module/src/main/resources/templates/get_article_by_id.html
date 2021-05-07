@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Article page</title>
+</head>
+<h1>Full article</h1>
+<body>
+<form action="#" th:action="@{/articles/show-article-by-id}" method="post">
+    <table border="1">
+        <tr>
+            <th>date</th>
+            <th>name</th>
+            <th>article</th>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>comments</th>
+        </tr>
+        <td th:text="${article.date}"></td>
+        <td th:text="${article.name}"></td>
+        <td th:text="${article.articleBody}"></td>
+        <td th:text="${article.firstName}"></td>
+        <td th:text="${article.lastName}"></td>
+    </table>
+    <tr>
+        <br>
+        <td>
+            <a th:href="@{/articles/get}">Back!</a>
+        </td>
+    </tr>
+</form>
+</body>
+</html>

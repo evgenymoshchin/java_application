@@ -50,4 +50,10 @@ public class User {
             mappedBy = "user"
     )
     private List<Review> reviews = new ArrayList<>();
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "user"
+    )
+    private List<Article> articles = new ArrayList<>();
 }
