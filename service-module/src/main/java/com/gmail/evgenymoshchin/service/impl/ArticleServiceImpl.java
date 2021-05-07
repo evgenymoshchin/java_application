@@ -1,38 +1,42 @@
 package com.gmail.evgenymoshchin.service.impl;
 
 import com.gmail.evgenymoshchin.repository.ArticleRepository;
+import com.gmail.evgenymoshchin.repository.CommentRepository;
 import com.gmail.evgenymoshchin.repository.UserRepository;
 import com.gmail.evgenymoshchin.repository.model.Article;
-import com.gmail.evgenymoshchin.repository.model.Role;
+import com.gmail.evgenymoshchin.repository.model.Comment;
 import com.gmail.evgenymoshchin.repository.model.User;
 import com.gmail.evgenymoshchin.service.ArticleService;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
 import com.gmail.evgenymoshchin.service.model.ArticlePageDTO;
-import com.gmail.evgenymoshchin.service.model.UserDTO;
+import com.gmail.evgenymoshchin.service.model.CommentDTO;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
+import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
 
-    public ArticleServiceImpl(UserRepository userRepository, ArticleRepository articleRepository) {
+    public ArticleServiceImpl(UserRepository userRepository, ArticleRepository articleRepository, CommentRepository commentRepository) {
         this.userRepository = userRepository;
         this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
     @Transactional
-    public ArticlePageDTO findArticlesWithPagination(Integer pageNumber, Integer pageSize) {
+    public ArticlePageDTO findArticlesWithPagination(int pageNumber, int pageSize) {
         ArticlePageDTO articlePage = new ArticlePageDTO();
         List<Article> articles = articleRepository.findWithPagination(pageNumber, pageSize);
         List<ArticleDTO> articleDTOS = new ArrayList<>();
@@ -41,11 +45,9 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleDTOS.sort(Comparator.comparing(ArticleDTO::getDate));
         articlePage.getArticles().addAll(articleDTOS);
-        Long countOfReviews = articleRepository.getCount();
-        articlePage.setPagesCount(countOfReviews);
-        List<Integer> numbersOfPages = IntStream.rangeClosed(1, Math.toIntExact(countOfReviews / pageSize + 1))
-                .boxed()
-                .collect(Collectors.toList());
+        Long countOfArticles = articleRepository.getCount();
+        articlePage.setPagesCount(countOfArticles);
+        List<Integer> numbersOfPages = getNumbersOfPages(pageSize, countOfArticles);
         articlePage.getNumbersOfPages().addAll(numbersOfPages);
         return articlePage;
     }
@@ -86,6 +88,15 @@ public class ArticleServiceImpl implements ArticleService {
             articleDTO.setFirstName(user.getFirstName());
             articleDTO.setLastName(user.getLastName());
         }
+        if (Objects.nonNull(article.getComments())) {
+            List<CommentDTO> commentDTOS = new ArrayList<>();
+            List<Comment> comments = article.getComments();
+            for (Comment comment : comments) {
+                commentDTOS.add(convertCommentToDTO(comment));
+            }
+            commentDTOS.sort(Comparator.comparing(CommentDTO::getDate));
+            articleDTO.setComments(commentDTOS);
+        }
         return articleDTO;
     }
 
@@ -94,11 +105,29 @@ public class ArticleServiceImpl implements ArticleService {
         article.setName(articleDTO.getName());
         article.setArticleBody(articleDTO.getArticleBody());
         article.setSummary(articleDTO.getSummary());
+        article.setCreatedBy(LocalDate.now());
         User user = userRepository.findByUsername(username);
         article.setUser(user);
-//        if (Objects.nonNull(article.getUser())) {
-//
-//        }
+        if (Objects.nonNull(articleDTO.getComments())) {
+            List<Comment> comments = new ArrayList<>();
+            List<CommentDTO> commentDTOS = articleDTO.getComments();
+            for (CommentDTO commentDTO : commentDTOS) {
+                Comment comment = commentRepository.findById(commentDTO.getId());
+                comments.add(comment);
+            }
+            article.setComments(comments);
+        }
         return article;
+    }
+
+    private CommentDTO convertCommentToDTO(Comment comment) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setId(comment.getId());
+        commentDTO.setDate(comment.getCreatedBy());
+        commentDTO.setCommentBody(comment.getCommentBody());
+        User user = userRepository.findById(comment.getUser().getId());
+        commentDTO.setFirstName(user.getFirstName());
+        commentDTO.setLastName(user.getLastName());
+        return commentDTO;
     }
 }

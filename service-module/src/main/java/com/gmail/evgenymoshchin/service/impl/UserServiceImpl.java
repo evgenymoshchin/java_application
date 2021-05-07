@@ -23,13 +23,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MAIL_PASSWORD_CHANGE_NOTIFICATION_VALUE;
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MAIL_TEXT_NOTIFICATION_VALUE;
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.SUCCESSFUL_MAIL_MESSAGE;
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.USER_EXIST_EXCEPTION_MESSAGE_VALUE;
+import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -98,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserPageDTO findUsersWithPagination(Integer pageNumber, Integer pageSize) {
+    public UserPageDTO findUsersWithPagination(int pageNumber, int pageSize) {
         UserPageDTO userPage = new UserPageDTO();
         List<User> users = userRepository.findWithPagination(pageNumber, pageSize);
         List<UserDTO> userDTOS = new ArrayList<>();
@@ -109,9 +108,7 @@ public class UserServiceImpl implements UserService {
         userPage.getUsers().addAll(userDTOS);
         Long countOfUsers = userRepository.getCount();
         userPage.setPagesCount(countOfUsers);
-        List<Integer> numbersOfPages = IntStream.rangeClosed(1, Math.toIntExact(countOfUsers / pageSize + 1))
-                .boxed()
-                .collect(Collectors.toList());
+        List<Integer> numbersOfPages = getNumbersOfPages(pageSize, countOfUsers);
         userPage.getNumbersOfPages().addAll(numbersOfPages);
         return userPage;
     }

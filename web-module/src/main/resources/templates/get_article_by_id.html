@@ -14,13 +14,28 @@
             <th>article</th>
             <th>firstName</th>
             <th>lastName</th>
-            <th>comments</th>
         </tr>
         <td th:text="${article.date}"></td>
         <td th:text="${article.name}"></td>
         <td th:text="${article.articleBody}"></td>
         <td th:text="${article.firstName}"></td>
         <td th:text="${article.lastName}"></td>
+    </table>
+    <br>
+    <h2>Actual comments for this article</h2>
+    <table border="1">
+        <tr>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>date</th>
+            <th>comment</th>
+        </tr>
+        <tr th:each="comment:${comments}">
+            <td th:text="${comment.firstName}"></td>
+            <td th:text="${comment.lastName}"></td>
+            <td th:text="${comment.date}"></td>
+            <td th:text="${comment.commentBody}"></td>
+        </tr>
     </table>
     <tr>
         <br>

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ArticleService {
 
-    ArticlePageDTO findArticlesWithPagination(Integer pageNumber, Integer pageSize);
+    ArticlePageDTO findArticlesWithPagination(int pageNumber, int pageSize);
 
     ArticleDTO findArticleById(Long id);
 

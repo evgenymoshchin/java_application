@@ -1,9 +1,7 @@
 package com.gmail.evgenymoshchin.repository.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,11 +47,13 @@ public class User {
             orphanRemoval = true,
             mappedBy = "user"
     )
+    @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             mappedBy = "user"
     )
+    @ToString.Exclude
     private List<Article> articles = new ArrayList<>();
 }

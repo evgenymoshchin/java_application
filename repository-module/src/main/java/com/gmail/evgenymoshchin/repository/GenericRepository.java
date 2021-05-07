@@ -11,7 +11,7 @@ public interface GenericRepository<I, T> {
 
     List<T> findAll();
 
-    List<T> findWithPagination(Integer pageNumber, Integer pageSize);
+    List<T> findWithPagination(int pageNumber, int pageSize);
 
     Long getCount();
 }

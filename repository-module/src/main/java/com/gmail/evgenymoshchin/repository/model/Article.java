@@ -1,7 +1,9 @@
 package com.gmail.evgenymoshchin.repository.model;
 
 import lombok.Data;
+import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,13 +32,15 @@ public class Article {
     @Column(name = "summary")
     private String summary;
     @Column(name = "created_by")
-    private Date createdBy;
+    private LocalDate createdBy;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @PrePersist
-    protected void createdOn() {
-        createdBy = new Date();
-    }
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "article_id")
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
 }

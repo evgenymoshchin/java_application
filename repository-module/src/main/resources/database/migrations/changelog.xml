@@ -131,4 +131,37 @@
                                  referencedTableName="user"
                                  referencedColumnNames="id"/>
     </changeSet>
+    <changeSet id="2.3" author="evgeny.moshchin@gmail.com">
+        <createTable tableName="comment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>/>
+            </column>
+            <column name="comment_body" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>/>
+            </column>
+            <column name="article_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2.4" author="evgeny.moshchin@gmail.com">
+        <addForeignKeyConstraint constraintName="fk_comment2user"
+                                 baseTableName="comment"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="2.5" author="evgeny.moshchin@gmail.com">
+        <addForeignKeyConstraint constraintName="fk_comment2article"
+                                 baseTableName="comment"
+                                 baseColumnNames="article_id"
+                                 referencedTableName="article"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

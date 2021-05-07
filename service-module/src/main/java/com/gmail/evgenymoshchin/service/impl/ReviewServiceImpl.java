@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
+import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -30,7 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public ReviewPageDTO findReviewsWithPagination(Integer pageNumber, Integer pageSize) {
+    public ReviewPageDTO findReviewsWithPagination(int pageNumber, int pageSize) {
         ReviewPageDTO reviewPage = new ReviewPageDTO();
         List<Review> reviews = reviewRepository.findWithPagination(pageNumber, pageSize);
         List<ReviewDTO> reviewDTOS = new ArrayList<>();
@@ -41,9 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewPage.getReviews().addAll(reviewDTOS);
         Long countOfReviews = reviewRepository.getCount();
         reviewPage.setPagesCount(countOfReviews);
-        List<Integer> numbersOfPages = IntStream.rangeClosed(1, Math.toIntExact(countOfReviews / pageSize + 1))
-                .boxed()
-                .collect(Collectors.toList());
+        List<Integer> numbersOfPages = getNumbersOfPages(pageSize, countOfReviews);
         reviewPage.getNumbersOfPages().addAll(numbersOfPages);
         return reviewPage;
     }
@@ -57,8 +55,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void changeVisibilityById(Long allId) {
-        Review review = reviewRepository.findById(allId);
+    public void changeVisibilityById(Long ids) {
+        Review review = reviewRepository.findById(ids);
         review.setIsVisible(!review.getIsVisible());
     }
 

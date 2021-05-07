@@ -29,8 +29,8 @@ public class ReviewController {
 
     @GetMapping("/get")
     public String getReviews(Model model,
-                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                             @RequestParam(value = "page", required = false, defaultValue = "1") Integer pageNumber
+                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber
     ) {
         ReviewPageDTO reviewPage = reviewService.findReviewsWithPagination(pageNumber, pageSize);
         model.addAttribute("reviewPage", reviewPage);
@@ -44,12 +44,12 @@ public class ReviewController {
     }
 
     @PostMapping("/change")
-    public String changeVisibilityById(@RequestParam(value = "selectedReviews") List<Long> ids,
-                                       @RequestParam(value = "allIds") List<Long> allIds) {
-        if (ids != null) {
-            allIds.removeAll(ids);
-            logger.info(allIds.toString());
-            for (Long allId : allIds) {
+    public String changeVisibilityById(@RequestParam(value = "selectedReviews") List<Long> selectedIds,
+                                       @RequestParam(value = "allIds") List<Long> reviewsIds) {
+        if (selectedIds != null) {
+            reviewsIds.removeAll(selectedIds);
+            logger.info(reviewsIds.toString());
+            for (Long allId : reviewsIds) {
                 reviewService.changeVisibilityById(allId);
             }
         }
