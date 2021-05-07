@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#"
+      th:action="@{/users/update-role/{id}(id=${user.id})}" th:object="${user}" method="post">
+    <tr>
+        <td><b>Choose role:</b></td>
+        <td>
+            <label>
+                <select th:object="${roles}" th:name="role">
+                    <option th:each="role : ${roles}"
+                            th:value="${role.name}"
+                            th:utext="${role.name}"></option>
+                </select>
+            </label>
+        </td>
+    </tr>
+    <input type="submit" value="Update User">
+</form>
+</body>
+</html>
