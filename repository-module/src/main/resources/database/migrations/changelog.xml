@@ -164,4 +164,24 @@
                                  referencedTableName="article"
                                  referencedColumnNames="id"/>
     </changeSet>
+    <changeSet id="2.6" author="evgeny.moshchin@gmail.com">
+        <createTable tableName="user_information">
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>/>
+            </column>
+            <column name="address" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="telephone" type="varchar(13)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2.7" author="evgeny.moshchin@gmail.com">
+        <addForeignKeyConstraint constraintName="fk_user_information2user"
+                                 baseTableName="user_information"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>
