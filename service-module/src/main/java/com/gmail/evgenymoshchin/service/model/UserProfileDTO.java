@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-// TODO REGEXP FOR THE ADDRESS AND PHONE!!!!!!!!
 @Data
 public class UserProfileDTO {
     private Long id;
@@ -21,6 +20,9 @@ public class UserProfileDTO {
     @Size(max = 40)
     @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
     private String lastName;
+    @Size(max = 40)
+    @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
     private String address;
+    @Pattern(regexp = "^\\+375\\d{9}", message = "Phone number should be valid")
     private String telephone;
 }

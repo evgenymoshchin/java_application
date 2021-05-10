@@ -1,6 +1,9 @@
 package com.gmail.evgenymoshchin.repository.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
@@ -17,7 +20,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
 @Table(name = "article")
 public class Article {
@@ -37,10 +42,9 @@ public class Article {
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(
+            mappedBy = "article",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JoinColumn(name = "article_id")
-    @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 }

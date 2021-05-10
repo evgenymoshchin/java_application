@@ -39,8 +39,16 @@ public class UserProfileServiceImpl implements UserProfileService {
         User user = userRepository.findById(userProfileDTO.getId());
         user.setFirstName(userProfileDTO.getFirstName());
         user.setLastName(userProfileDTO.getLastName());
-        user.getUserInformation().setAddress(userProfileDTO.getAddress());
-        user.getUserInformation().setTelephone(userProfileDTO.getTelephone());
+        if (Objects.nonNull(user.getUserInformation())) {
+            user.getUserInformation().setAddress(userProfileDTO.getAddress());
+            user.getUserInformation().setTelephone(userProfileDTO.getTelephone());
+        } else {
+            UserInformation userInformation = new UserInformation();
+            userInformation.setAddress(userProfileDTO.getAddress());
+            userInformation.setTelephone(userProfileDTO.getTelephone());
+            userInformation.setUser(user);
+            user.setUserInformation(userInformation);
+        }
     }
 
     private UserProfileDTO convertUserProfileToDTO(User user) {
@@ -54,18 +62,4 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
         return userProfileDTO;
     }
-
-//    private User convertDTOtoUser(UserDTO userDTO) {
-//        User user = new User();
-//        user.setFirstName(userDTO.getFirstName());
-//        user.setLastName(userDTO.getLastName());
-//        user.setPatronymic(userDTO.getPatronymic());
-//        user.setUsername(userDTO.getUsername());
-//        Role role = roleRepository.findByRoleByName(userDTO.getRole());
-//        user.setRole(role);
-//        String generatedPassword = passwordService.generateRandomPassword();
-//        user.setPassword(passwordEncoder.encode(generatedPassword));
-//        sendEmail(userDTO.getUsername(), generatedPassword);
-//        return user;
-//    }
 }

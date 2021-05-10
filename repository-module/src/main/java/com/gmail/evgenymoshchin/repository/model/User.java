@@ -1,7 +1,8 @@
 package com.gmail.evgenymoshchin.repository.model;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
 @Table(name = "user")
 public class User {
@@ -48,14 +51,12 @@ public class User {
             orphanRemoval = true,
             mappedBy = "user"
     )
-    @ToString.Exclude
     private List<Review> reviews = new ArrayList<>();
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             mappedBy = "user"
     )
-    @ToString.Exclude
     private List<Article> articles = new ArrayList<>();
     @OneToOne(
             fetch = FetchType.LAZY,

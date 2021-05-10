@@ -8,7 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,18 +24,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/articles")
 public class ArticleAPIController {
+
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private final ArticleService articleService;
-    private final UserService userService;
 
-    public ArticleAPIController(ArticleService articleService, UserService userService) {
+    public ArticleAPIController(ArticleService articleService) {
         this.articleService = articleService;
-        this.userService = userService;
     }
 
     @GetMapping
-    public List<ArticleDTO> getArticles(ArticleDTO articleDTO) {
+    public List<ArticleDTO> getArticles() {
         return articleService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ArticleDTO getArticleById(@PathVariable Long id) {
+        return articleService.findArticleById(id);
     }
 
     @PostMapping
@@ -41,11 +47,15 @@ public class ArticleAPIController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-//            logger.info(principal.getName());
-            // TODO DATE and PRINCIPALS with BASIC
-            articleService.addArticle(article, "ztrancer@gmail.com");
+            articleService.addArticle(article, principal.getName());
             logger.info("Added article with name {}", article.getName());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArticleById(@PathVariable Long id) {
+        articleService.deleteArticleById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

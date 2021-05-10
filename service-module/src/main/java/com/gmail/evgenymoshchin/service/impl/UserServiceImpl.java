@@ -150,6 +150,6 @@ public class UserServiceImpl implements UserService {
         message.setTo(username);
         message.setSubject(MAIL_PASSWORD_CHANGE_NOTIFICATION_VALUE);
         message.setText(String.format(MAIL_TEXT_NOTIFICATION_VALUE, username, password));
-//        javaMailSender.send(message);
+        javaMailSender.send(message);
     }
 }

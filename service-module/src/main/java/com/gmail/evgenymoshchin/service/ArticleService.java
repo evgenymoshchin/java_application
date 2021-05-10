@@ -14,4 +14,6 @@ public interface ArticleService {
     List<ArticleDTO> findAll();
 
     void addArticle(ArticleDTO article, String username);
+
+    void deleteArticleById(Long id);
 }

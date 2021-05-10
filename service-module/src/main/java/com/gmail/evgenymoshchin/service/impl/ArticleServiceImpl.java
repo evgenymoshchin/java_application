@@ -75,6 +75,13 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.persist(convertDTOtoArticle(articleDTO, username));
     }
 
+    @Override
+    @Transactional
+    public void deleteArticleById(Long id) {
+        Article article = articleRepository.findById(id);
+        articleRepository.remove(article);
+    }
+
     private ArticleDTO convertArticleToDTO(Article article) {
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setId(article.getId());
