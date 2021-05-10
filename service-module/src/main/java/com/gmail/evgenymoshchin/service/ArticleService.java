@@ -6,7 +6,6 @@ import com.gmail.evgenymoshchin.service.model.ArticlePageDTO;
 import java.util.List;
 
 public interface ArticleService {
-
     ArticlePageDTO findArticlesWithPagination(int pageNumber, int pageSize);
 
     ArticleDTO findArticleById(Long id);

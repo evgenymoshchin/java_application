@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.API_URL_VALUE;
+
 @Configuration
 @Order(1)
 public class WebAPISecurityConfigurer extends WebSecurityConfigurerAdapter {
@@ -27,7 +29,7 @@ public class WebAPISecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/api/**")
+        http.antMatcher(API_URL_VALUE)
                 .authorizeRequests()
                 .anyRequest()
                 .hasRole(RoleEnum.SECURE_API_USER.name())
