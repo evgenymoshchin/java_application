@@ -7,5 +7,5 @@ public interface ReviewService {
 
     void removeById(Long id);
 
-    void changeVisibilityById(Long ids);
+    void changeVisibilityById(Long id);
 }

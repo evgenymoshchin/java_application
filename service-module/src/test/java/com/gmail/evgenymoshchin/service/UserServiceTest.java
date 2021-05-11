@@ -1,4 +1,4 @@
-package com.gmail.evgenymoshchin;
+package com.gmail.evgenymoshchin.service;
 
 import com.gmail.evgenymoshchin.repository.UserRepository;
 import com.gmail.evgenymoshchin.repository.model.User;

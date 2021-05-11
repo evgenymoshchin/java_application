@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceConverterImplTest {
 
@@ -137,10 +139,12 @@ class UserServiceConverterImplTest {
 
     @Test
     void shouldConvertDTOToUserAndReturnCorrectRole() {
-//        UserDTO userDTO = new UserDTO();
-//        RoleEnum roleEnum = RoleEnum.ROLE_SALE_USER;
-//        userDTO.setRole(roleEnum);
-//        User user = userServiceConverter.convertDTOtoUser(userDTO);
-//        Assertions.assertEquals(roleEnum, user.getRole().getName());
+        Role role = new Role();
+        role.setName(RoleEnum.ROLE_SALE_USER);
+        when(roleRepository.findByRoleByName(RoleEnum.ROLE_SALE_USER)).thenReturn(role);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setRole(role.getName());
+        User user = userServiceConverter.convertDTOtoUser(userDTO);
+        Assertions.assertEquals(RoleEnum.ROLE_SALE_USER, user.getRole().getName());
     }
 }

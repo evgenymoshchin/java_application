@@ -53,7 +53,7 @@ public class UserServiceConverterImpl implements UserServiceConverter {
         user.setLastName(userDTO.getLastName());
         user.setPatronymic(userDTO.getPatronymic());
         user.setUsername(userDTO.getUsername());
-        if (Objects.nonNull(roleRepository.findByRoleByName(userDTO.getRole()))){
+        if (Objects.nonNull(userDTO.getRole())){
             Role role = roleRepository.findByRoleByName(userDTO.getRole());
             user.setRole(role);
         }

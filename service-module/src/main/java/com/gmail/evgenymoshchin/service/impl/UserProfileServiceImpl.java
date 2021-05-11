@@ -4,6 +4,7 @@ import com.gmail.evgenymoshchin.repository.UserRepository;
 import com.gmail.evgenymoshchin.repository.model.User;
 import com.gmail.evgenymoshchin.repository.model.UserInformation;
 import com.gmail.evgenymoshchin.service.UserProfileService;
+import com.gmail.evgenymoshchin.service.converters.UserProfileServiceConverter;
 import com.gmail.evgenymoshchin.service.model.UserProfileDTO;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +15,25 @@ import java.util.Objects;
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserRepository userRepository;
+    private final UserProfileServiceConverter converter;
 
-    public UserProfileServiceImpl(UserRepository userRepository) {
+    public UserProfileServiceImpl(UserRepository userRepository, UserProfileServiceConverter converter) {
         this.userRepository = userRepository;
+        this.converter = converter;
     }
 
     @Override
     @Transactional
     public UserProfileDTO getById(Long id) {
         User user = userRepository.findById(id);
-        return convertUserProfileToDTO(user);
+        return converter.convertUserProfileToDTO(user);
     }
 
     @Override
     @Transactional
     public UserProfileDTO findUserProfileByUsername(String name) {
         User user = userRepository.findByUsername(name);
-        return convertUserProfileToDTO(user);
+        return converter.convertUserProfileToDTO(user);
     }
 
     @Override
@@ -49,17 +52,5 @@ public class UserProfileServiceImpl implements UserProfileService {
             userInformation.setUser(user);
             user.setUserInformation(userInformation);
         }
-    }
-
-    private UserProfileDTO convertUserProfileToDTO(User user) {
-        UserProfileDTO userProfileDTO = new UserProfileDTO();
-        userProfileDTO.setId(user.getId());
-        userProfileDTO.setFirstName(user.getFirstName());
-        userProfileDTO.setLastName(user.getLastName());
-        if (Objects.nonNull(user.getUserInformation())) {
-            userProfileDTO.setAddress(user.getUserInformation().getAddress());
-            userProfileDTO.setTelephone(user.getUserInformation().getTelephone());
-        }
-        return userProfileDTO;
     }
 }
