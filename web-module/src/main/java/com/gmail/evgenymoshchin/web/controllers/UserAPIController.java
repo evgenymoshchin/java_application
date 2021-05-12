@@ -24,11 +24,9 @@ public class UserAPIController {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private final UserService userService;
-    private final RoleService roleService;
 
-    public UserAPIController(UserService userService, RoleService roleService) {
+    public UserAPIController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @PostMapping
