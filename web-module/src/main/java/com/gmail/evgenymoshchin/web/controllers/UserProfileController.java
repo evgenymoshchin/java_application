@@ -3,6 +3,7 @@ package com.gmail.evgenymoshchin.web.controllers;
 import com.gmail.evgenymoshchin.service.UserProfileService;
 import com.gmail.evgenymoshchin.service.UserService;
 import com.gmail.evgenymoshchin.service.model.UserProfileDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,16 +16,12 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/profiles")
 public class UserProfileController {
 
     private final UserProfileService userProfileService;
     private final UserService userService;
-
-    public UserProfileController(UserProfileService userProfileService, UserService userService) {
-        this.userProfileService = userProfileService;
-        this.userService = userService;
-    }
 
     @GetMapping("/get")
     public String getUserProfile(Principal principal, Model model) {
@@ -34,7 +31,7 @@ public class UserProfileController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUserProfilePage(@PathVariable Long id, Model model) {
+    public String getUpdateUserProfilePage(@PathVariable Long id, Model model) {
         model.addAttribute("profile", userProfileService.getById(id));
         return "update_profile";
     }

@@ -29,12 +29,12 @@ public class WebAPISecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.antMatcher(API_URL_VALUE)
-        http.antMatcher("/something")
-//                .authorizeRequests()
-//                .anyRequest()
-//                .hasRole(RoleEnum.SECURE_API_USER.name())
-//                .and()
+        http.antMatcher(API_URL_VALUE)
+//        http.antMatcher("/something")
+                .authorizeRequests()
+                .anyRequest()
+                .hasRole(RoleEnum.SECURE_API_USER.name())
+                .and()
                 .httpBasic()
                 .and()
                 .csrf()

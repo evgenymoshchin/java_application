@@ -184,4 +184,23 @@
                                  referencedTableName="user"
                                  referencedColumnNames="id"/>
     </changeSet>
+    <changeSet id="3.0" author="evgeny.moshchin@gmail.com">
+        <createTable tableName="item">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unique_number" type="varchar(36)">
+                <constraints nullable="false"/>/>
+            </column>
+            <column name="price" type="DECIMAL(9,3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

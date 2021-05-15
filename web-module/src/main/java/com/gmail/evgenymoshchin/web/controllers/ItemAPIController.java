@@ -1,7 +1,7 @@
 package com.gmail.evgenymoshchin.web.controllers;
 
-import com.gmail.evgenymoshchin.service.ArticleService;
-import com.gmail.evgenymoshchin.service.model.ArticleDTO;
+import com.gmail.evgenymoshchin.service.ItemService;
+import com.gmail.evgenymoshchin.service.model.ItemDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -16,41 +16,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 @Log4j2
 @RestController
+@RequestMapping("/api/items")
 @RequiredArgsConstructor
-@RequestMapping("/api/articles")
-public class ArticleAPIController {
+public class ItemAPIController {
 
-    private final ArticleService articleService;
+    private final ItemService itemService;
 
     @GetMapping
-    public List<ArticleDTO> getArticles() {
-        return articleService.findAll();
+    public List<ItemDTO> getItems() {
+        return itemService.getItems();
     }
 
     @GetMapping("/{id}")
-    public ArticleDTO getArticleById(@PathVariable Long id) {
-        return articleService.findArticleById(id);
+    public ItemDTO getItemById(@PathVariable Long id) {
+        return itemService.findItemById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Void> addArticle(@RequestBody @Valid ArticleDTO article, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity<Void> addArticle(@RequestBody @Valid ItemDTO item, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            articleService.addArticle(article, principal.getName());
-            log.info("Added article with name {}", article.getName());
+            itemService.addItem(item);
+            log.info("Added item with name {}", item.getName());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticleById(@PathVariable Long id) {
-        articleService.deleteArticleById(id);
+        itemService.removeItemById(id);
+        log.info("Removed item with id {}", id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

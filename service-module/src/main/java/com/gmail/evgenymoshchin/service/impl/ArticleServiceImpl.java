@@ -9,6 +9,7 @@ import com.gmail.evgenymoshchin.service.ArticleSummaryMaker;
 import com.gmail.evgenymoshchin.service.converters.ArticleServiceConverter;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
 import com.gmail.evgenymoshchin.service.model.ArticlePageDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,22 +22,13 @@ import java.util.Objects;
 import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
 @Service
+@RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleServiceConverter converter;
     private final ArticleSummaryMaker summaryMaker;
     private final CommentRepository commentRepository;
-
-    public ArticleServiceImpl(ArticleRepository articleRepository,
-                              ArticleServiceConverter converter,
-                              ArticleSummaryMaker summaryMaker,
-                              CommentRepository commentRepository) {
-        this.articleRepository = articleRepository;
-        this.converter = converter;
-        this.summaryMaker = summaryMaker;
-        this.commentRepository = commentRepository;
-    }
 
     @Override
     @Transactional

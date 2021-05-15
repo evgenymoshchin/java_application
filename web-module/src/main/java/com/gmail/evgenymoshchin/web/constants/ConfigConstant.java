@@ -11,6 +11,11 @@ public interface ConfigConstant {
     String REVIEWS_CONTROLLER_MAPPING_URL = "/reviews/**";
     String DEFAULT_URL = "/";
     String API_URL_VALUE = "/api/**";
-    String ARTICLES_URL = "/articles/**";
     String PROFILES_URL = "/profiles/**";
+    String ARTICLES_URL = "/articles";
+    String DELETE_ARTICLE_URL = "/delete-article-by-id";
+    String ADD_ARTICLE_URL = "/add";
+    String ITEMS_URL = "/items/**";
+    String GET_ARTICLES_URL = "/get";
+    String SHOW_ARTICLE_URL = "/show-article-by-id";
 }

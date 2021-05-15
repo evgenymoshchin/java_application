@@ -3,11 +3,8 @@ package com.gmail.evgenymoshchin.web.controllers;
 import com.gmail.evgenymoshchin.service.ArticleService;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
 import com.gmail.evgenymoshchin.service.model.ArticlePageDTO;
-import com.gmail.evgenymoshchin.service.model.UserProfileDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,32 +15,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.lang.invoke.MethodHandles;
 import java.security.Principal;
 import java.time.LocalDate;
 
+@Log4j2
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/articles")
 public class ArticleController {
 
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-
     private final ArticleService articleService;
 
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
-
     @GetMapping("/get")
-    public String getReviews(Model model,
-                             Principal principal,
-                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber
+    public String getArticles(Model model,
+                              Principal principal,
+                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                              @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber
     ) {
         ArticlePageDTO articlePage = articleService.findArticlesWithPagination(pageNumber, pageSize);
         model.addAttribute("articlePage", articlePage);
         model.addAttribute("email", principal.getName());
-        logger.info(principal.getName());
+        log.debug(principal.getName());
         return "get_all_articles";
     }
 
@@ -75,9 +67,7 @@ public class ArticleController {
     public String addArticle(@Valid ArticleDTO article,
                              BindingResult bindingResult,
                              Principal principal) {
-        logger.info(article);
-        logger.info(principal);
-        logger.info(bindingResult.getFieldError());
+        log.debug(principal);
         if (!bindingResult.hasErrors()) {
             articleService.addArticle(article, principal.getName());
             return "redirect:/articles/get";
@@ -87,13 +77,13 @@ public class ArticleController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUserProfilePage(@PathVariable Long id, Model model) {
+    public String getUpdateArticlePage(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleService.findArticleById(id));
         return "update_article";
     }
 
     @PostMapping("/update")
-    public String updateUserProfile(@Valid ArticleDTO article, BindingResult bindingResult, Model model) {
+    public String updateArticle(@Valid ArticleDTO article, BindingResult bindingResult, Model model) {
         model.addAttribute("article", article);
         if (!bindingResult.hasErrors()) {
             articleService.updateArticle(article);
@@ -104,7 +94,6 @@ public class ArticleController {
 
     @GetMapping("/delete-comment")
     public String removeCommentById(@RequestParam Long id) {
-        logger.info(id);
         if (id != null) {
             articleService.deleteArticleCommentById(id);
         }

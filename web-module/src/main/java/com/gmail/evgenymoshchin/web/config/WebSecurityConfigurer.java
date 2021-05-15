@@ -11,10 +11,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ACCESS_DENIED_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ADD_ARTICLE_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ARTICLES_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.DEFAULT_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.DELETE_ARTICLE_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.GET_ARTICLES_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ITEMS_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.LOGIN_PAGE_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.PROFILES_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.REVIEWS_CONTROLLER_MAPPING_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.SHOW_ARTICLE_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.USERS_CONTROLLER_MAPPING_URL;
 
 @Configuration
@@ -42,9 +48,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .hasRole(RoleEnum.ADMINISTRATOR.name())
                 .antMatchers(PROFILES_URL)
                 .hasRole(RoleEnum.CUSTOMER_USER.name())
-                .antMatchers("/articles/delete-article-by-id", "/articles/add")
+                .antMatchers(ARTICLES_URL + DELETE_ARTICLE_URL, ARTICLES_URL + ADD_ARTICLE_URL, ITEMS_URL)
                 .hasRole(RoleEnum.SALE_USER.name())
-                .antMatchers("/articles/get", "/articles/show-article-by-id")
+                .antMatchers(ARTICLES_URL + GET_ARTICLES_URL, ARTICLES_URL + SHOW_ARTICLE_URL)
                 .hasAnyRole(RoleEnum.CUSTOMER_USER.name(), RoleEnum.SALE_USER.name())
                 .antMatchers(LOGIN_PAGE_URL, DEFAULT_URL, ACCESS_DENIED_URL)
                 .permitAll()
