@@ -24,9 +24,6 @@ public class ArticleDTO {
     @NotEmpty
     @Size(max = 20)
     private String name;
-    @NotNull
-    @NotEmpty
-    @Size(max = 200)
     private String summary;
     private LocalDate date;
     private Long userId;

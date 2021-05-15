@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>List of articles</h1>
-<form  th:action="@{/articles/get}">
+<form th:action="@{/articles/get}">
     <table border="1">
         <tr>
             <th>date</th>
@@ -25,6 +25,9 @@
             <td>
                 <a th:href="@{/articles/show-article-by-id/(id=${article.id})}"><span>More details</span></a>
             </td>
+            <td th:if="${email == 'sale@gmail.com'}">
+                <a th:href="@{/articles/delete-article-by-id/(id=${article.id})}"><span>Delete this article</span></a>
+            </td>
         </tr>
     </table>
     <td th:if="${articlePage.pagesCount gt 0}"
@@ -35,5 +38,9 @@
     </td>
 </form>
 <br>
+<td th:if="${email == 'sale@gmail.com'}">
+    <button onclick="window.location.href='/articles/add'">Click to add new article!</button>
+</td>
+<button onclick="window.location.href='/logout'">Click to Log out!</button>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.gmail.evgenymoshchin.repository.UserRepository;
 import com.gmail.evgenymoshchin.repository.model.Article;
 import com.gmail.evgenymoshchin.repository.model.Comment;
 import com.gmail.evgenymoshchin.repository.model.User;
+import com.gmail.evgenymoshchin.service.ArticleSummaryMaker;
 import com.gmail.evgenymoshchin.service.converters.ArticleServiceConverter;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
 import com.gmail.evgenymoshchin.service.model.CommentDTO;
@@ -21,10 +22,12 @@ public class ArticleServiceConverterImpl implements ArticleServiceConverter {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final ArticleSummaryMaker summaryMaker;
 
-    public ArticleServiceConverterImpl(UserRepository userRepository, CommentRepository commentRepository) {
+    public ArticleServiceConverterImpl(UserRepository userRepository, CommentRepository commentRepository, ArticleSummaryMaker summaryMaker) {
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
+        this.summaryMaker = summaryMaker;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class ArticleServiceConverterImpl implements ArticleServiceConverter {
             for (Comment comment : comments) {
                 commentDTOS.add(convertCommentToDTO(comment));
             }
-            commentDTOS.sort(Comparator.comparing(CommentDTO::getDate));
+            commentDTOS.sort(Comparator.comparing(CommentDTO::getDate).reversed());
             articleDTO.setComments(commentDTOS);
         }
         return articleDTO;
@@ -58,7 +61,10 @@ public class ArticleServiceConverterImpl implements ArticleServiceConverter {
         Article article = new Article();
         article.setName(articleDTO.getName());
         article.setArticleBody(articleDTO.getArticleBody());
-        article.setSummary(articleDTO.getSummary());
+        if (Objects.nonNull(articleDTO.getArticleBody())) {
+            String summary = summaryMaker.getSummaryOfArticle(articleDTO.getArticleBody());
+            article.setSummary(summary);
+        }
         article.setCreatedBy(LocalDate.now());
         User user = userRepository.findByUsername(username);
         article.setUser(user);
@@ -82,6 +88,7 @@ public class ArticleServiceConverterImpl implements ArticleServiceConverter {
         User user = userRepository.findById(comment.getUser().getId());
         commentDTO.setFirstName(user.getFirstName());
         commentDTO.setLastName(user.getLastName());
+        commentDTO.setArticleId(comment.getArticle().getId());
         return commentDTO;
     }
 }

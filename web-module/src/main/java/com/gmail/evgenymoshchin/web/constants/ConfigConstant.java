@@ -2,7 +2,7 @@ package com.gmail.evgenymoshchin.web.constants;
 
 public interface ConfigConstant {
     String ADMIN_URL = "/users/get";
-    String SALE_USER_URL = "/items/get";
+    String SALE_USER_URL = "/articles/get";
     String ACCESS_DENIED_URL = "/access-denied";
     String CUSTOMER_USER_URL = "/articles/get";
     String SECURE_API_USER_URL = "/";

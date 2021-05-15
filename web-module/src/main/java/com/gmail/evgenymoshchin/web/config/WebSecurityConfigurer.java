@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ACCESS_DENIED_URL;
-import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ARTICLES_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.DEFAULT_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.LOGIN_PAGE_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.PROFILES_URL;
@@ -41,8 +40,12 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(USERS_CONTROLLER_MAPPING_URL, REVIEWS_CONTROLLER_MAPPING_URL)
                 .hasRole(RoleEnum.ADMINISTRATOR.name())
-                .antMatchers(ARTICLES_URL, PROFILES_URL)
+                .antMatchers(PROFILES_URL)
                 .hasRole(RoleEnum.CUSTOMER_USER.name())
+                .antMatchers("/articles/delete-article-by-id", "/articles/add")
+                .hasRole(RoleEnum.SALE_USER.name())
+                .antMatchers("/articles/get", "/articles/show-article-by-id")
+                .hasAnyRole(RoleEnum.CUSTOMER_USER.name(), RoleEnum.SALE_USER.name())
                 .antMatchers(LOGIN_PAGE_URL, DEFAULT_URL, ACCESS_DENIED_URL)
                 .permitAll()
                 .and()

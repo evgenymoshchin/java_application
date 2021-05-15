@@ -7,4 +7,5 @@ public interface UserControllerConstants {
     String USER_ATTRIBUTE_VALUE = "user";
     String ERROR_ATTRIBUTE_VALUE = "error";
     String SELECTED_USERS_PARAMETER_VALUE = "selectedUsers";
+    String SELECTED_ARTICLES_PARAMETER_VALUE = "selectedArticles";
 }
