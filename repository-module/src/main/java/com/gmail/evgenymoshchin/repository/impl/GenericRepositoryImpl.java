@@ -40,14 +40,14 @@ public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I
     @Override
     @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        String queryString = "from " + entityClass.getName() + " c";
+        String queryString = "from " + entityClass.getName();
         Query query = entityManager.createQuery(queryString);
         return query.getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<T> findWithPagination(Integer pageNumber, Integer pageSize) {
+    public List<T> findWithPagination(int pageNumber, int pageSize) {
         Query query = entityManager.createQuery("select t from " + entityClass.getName() + " t");
         query.setFirstResult(calculateOffset(pageNumber, pageSize));
         query.setMaxResults(pageSize);
@@ -60,7 +60,7 @@ public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I
         return (Long) query.getSingleResult();
     }
 
-    private Integer calculateOffset(Integer pageNumber, Integer pageSize) {
+    private int calculateOffset(int pageNumber, int pageSize) {
         return ((pageSize * pageNumber) - pageSize);
     }
 }

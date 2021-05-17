@@ -67,8 +67,8 @@ public class UserController {
 
     @GetMapping("/get")
     public String getUsers(Model model,
-                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                           @RequestParam(value = "page", required = false, defaultValue = "1") Integer pageNumber
+                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                           @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber
     ) {
         UserPageDTO userPage = userService.findUsersWithPagination(pageNumber, pageSize);
         model.addAttribute("userPage", userPage);

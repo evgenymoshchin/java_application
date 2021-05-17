@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>User profile</title>
+</head>
+<h1>Your profile information</h1>
+<body>
+<form action="#" th:action="@{/profiles/get}" method="post">
+    <table border="1">
+        <tr>
+            <th>firstName</th>
+            <th>lastName</th>
+            <th>address</th>
+            <th>telephone</th>
+            <th>link</th>
+
+        </tr>
+        <td th:text="${profile.firstName}"></td>
+        <td th:text="${profile.lastName}"></td>
+        <td th:text="${profile.address}"></td>
+        <td th:text="${profile.telephone}"></td>
+        <td>
+            <a th:href="@{/profiles/update/{id}(id=${profile.id})}"><span>Update profile</span></a>
+        </td>
+    </table>
+    <tr>
+        <br>
+        <td>
+            <a th:href="@{/profiles/get}">Back!</a>
+        </td>
+    </tr>
+</form>
+</body>
+</html>

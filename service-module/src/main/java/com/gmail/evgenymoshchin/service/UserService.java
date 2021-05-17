@@ -16,5 +16,5 @@ public interface UserService {
 
     void updatePasswordById(Long id);
 
-    UserPageDTO findUsersWithPagination(Integer pageNumber, Integer pageSize);
+    UserPageDTO findUsersWithPagination(int pageNumber, int pageSize);
 }

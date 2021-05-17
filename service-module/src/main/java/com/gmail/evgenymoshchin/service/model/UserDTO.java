@@ -9,26 +9,30 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import static com.gmail.evgenymoshchin.service.constants.DTOConstants.EMAIL_NOT_VALID_MESSAGE;
+import static com.gmail.evgenymoshchin.service.constants.DTOConstants.MESSAGE_WHEN_NOT_LATIN_CHARS;
+import static com.gmail.evgenymoshchin.service.constants.DTOConstants.REGEX_FOR_LATIN_CHARS;
+
 @Data
 public class UserDTO {
     private Long id;
     @NotNull
     @NotEmpty
     @Size(max = 20)
-    @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
+    @Pattern(regexp = REGEX_FOR_LATIN_CHARS, message = MESSAGE_WHEN_NOT_LATIN_CHARS)
     private String firstName;
     @NotNull
     @NotEmpty
     @Size(max = 40)
-    @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
+    @Pattern(regexp = REGEX_FOR_LATIN_CHARS, message = MESSAGE_WHEN_NOT_LATIN_CHARS)
     private String lastName;
     @NotNull
     @NotEmpty
     @Size(max = 40)
-    @Pattern(regexp = "^[A-Za-z]*$", message = "Should be only latin characters")
+    @Pattern(regexp = REGEX_FOR_LATIN_CHARS, message = MESSAGE_WHEN_NOT_LATIN_CHARS)
     private String patronymic;
     @NotEmpty
-    @Email(message = "Email should be valid")
+    @Email(message = EMAIL_NOT_VALID_MESSAGE)
     private String username;
     private RoleEnum role;
 }
