@@ -18,4 +18,5 @@ public interface ConfigConstant {
     String ITEMS_URL = "/items/**";
     String GET_ARTICLES_URL = "/get";
     String SHOW_ARTICLE_URL = "/show-article-by-id";
+    String UPDATE_ARTICLE_URL = "/update";
 }

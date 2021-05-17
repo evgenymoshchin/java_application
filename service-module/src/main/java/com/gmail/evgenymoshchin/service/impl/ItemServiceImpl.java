@@ -71,4 +71,15 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id);
         itemRepository.remove(item);
     }
+
+    @Override
+    @Transactional
+    public void copyItemById(Long id) {
+        Item item = itemRepository.findById(id);
+        Item copiedItem = new Item();
+        copiedItem.setName(item.getName());
+        copiedItem.setPrice(item.getPrice());
+        copiedItem.setDescription(item.getDescription());
+        itemRepository.persist(copiedItem);
+    }
 }

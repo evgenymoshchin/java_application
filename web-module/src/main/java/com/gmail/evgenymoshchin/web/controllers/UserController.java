@@ -6,8 +6,8 @@ import com.gmail.evgenymoshchin.service.UserService;
 import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
 import com.gmail.evgenymoshchin.service.model.UserPageDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,29 +18,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ERROR_ATTRIBUTE_VALUE;
-import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.EXIST_USER_MESSAGE_VALUE;
-import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ROLES_ATTRIBUTE_VALUE;
-import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.ROLE_ATTRIBUTE_VALUE;
-import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.SELECTED_USERS_PARAMETER_VALUE;
-import static com.gmail.evgenymoshchin.web.constants.UserControllerConstants.USER_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_SIZE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.ERROR_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.EXIST_USER_MESSAGE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.PAGE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.PAGE_SIZE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.ROLES_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.ROLE_ATTRIBUTE_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.SELECTED_USERS_PARAMETER_VALUE;
+import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.USERS_GET_REDIRECTION_URL;
 
+@Log4j2
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-
     private final UserService userService;
     private final RoleService roleService;
-
-    public UserController(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
 
     @GetMapping("/add")
     public String addUserPage(UserDTO userDTO, Model model) {
@@ -54,9 +52,9 @@ public class UserController {
         if (!bindingResult.hasErrors()) {
             try {
                 userService.addUser(userDTO);
-                return "redirect:/users/get";
+                return USERS_GET_REDIRECTION_URL;
             } catch (UserAlreadyExistException exception) {
-                logger.error(exception.getMessage(), exception);
+                log.error(exception.getMessage(), exception);
                 model.addAttribute(ERROR_ATTRIBUTE_VALUE, EXIST_USER_MESSAGE_VALUE);
                 return "add_user";
             }
@@ -67,8 +65,8 @@ public class UserController {
 
     @GetMapping("/get")
     public String getUsers(Model model,
-                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                           @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber
+                           @RequestParam(value = PAGE_SIZE, defaultValue = DEFAULT_PAGE_SIZE_VALUE) int pageSize,
+                           @RequestParam(value = PAGE, defaultValue = DEFAULT_PAGE_VALUE) int pageNumber
     ) {
         UserPageDTO userPage = userService.findUsersWithPagination(pageNumber, pageSize);
         model.addAttribute("userPage", userPage);
@@ -83,26 +81,25 @@ public class UserController {
                 userService.removeUserById(id);
             }
         }
-        return "redirect:/users/get";
+        return USERS_GET_REDIRECTION_URL;
     }
 
     @GetMapping("/update-role/{id}")
     public String getUpdateUserRolePage(@PathVariable Long id, Model model, UserDTO userDTO) {
         model.addAttribute(ROLES_ATTRIBUTE_VALUE, roleService.findAll());
-        model.addAttribute(USER_ATTRIBUTE_VALUE, userDTO);
         return "update_user";
     }
 
-    @PostMapping("/update-role/{id}")
-    public String updateUserRoleById(@PathVariable Long id,
+    @PostMapping("/update-role")
+    public String updateUserRoleById(UserDTO userDTO,
                                      @RequestParam(value = ROLE_ATTRIBUTE_VALUE) RoleEnum roleEnum) {
-        userService.updateUserRoleById(id, roleEnum);
-        return "redirect:/users/get";
+        userService.updateUserRoleById(userDTO.getId(), roleEnum);
+        return USERS_GET_REDIRECTION_URL;
     }
 
     @GetMapping("/update-password/{id}")
     public String updatePasswordById(@PathVariable Long id) {
         userService.updatePasswordById(id);
-        return "redirect:/users/get";
+        return USERS_GET_REDIRECTION_URL;
     }
 }

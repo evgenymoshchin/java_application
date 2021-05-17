@@ -19,8 +19,6 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    //TODO: ADD COPY ITEMS ABILITY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
     @GetMapping("/get")
     public String getItems(Model model,
                            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
@@ -43,6 +41,12 @@ public class ItemController {
         if (id != null) {
             itemService.removeItemById(id);
         }
+        return "redirect:/items/get";
+    }
+
+    @GetMapping("/copy-item")
+    public String copyItemById(@RequestParam("id") Long id) {
+        itemService.copyItemById(id);
         return "redirect:/items/get";
     }
 }

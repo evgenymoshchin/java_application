@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Articles</title>
 </head>
 <body>
 <h1>List of articles</h1>
+<div sec:authorize="isAuthenticated()">
+    You are authenticated as <span sec:authentication="name"></span></div>
 <form th:action="@{/articles/get}">
     <table border="1">
         <tr>
@@ -25,22 +28,23 @@
             <td>
                 <a th:href="@{/articles/show-article-by-id/(id=${article.id})}"><span>More details</span></a>
             </td>
-            <td th:if="${email == 'sale@gmail.com'}">
+            <td sec:authorize="hasRole('ROLE_SALE_USER')">
                 <a th:href="@{/articles/delete-article-by-id/(id=${article.id})}"><span>Delete this article</span></a>
             </td>
         </tr>
     </table>
-    <td th:if="${articlePage.pagesCount gt 0}"
-        th:each="pageNumber : ${articlePage.numbersOfPages}">
+    <div th:if="${articlePage.pagesCount gt 0}"
+         th:each="pageNumber : ${articlePage.numbersOfPages}">
         <a th:href="@{'/articles/get?page=' + ${pageNumber}}"
            th:text="${pageNumber}"
            th:name="page" th:value="${pageNumber}"> </a>
-    </td>
+    </div>
 </form>
 <br>
-<td th:if="${email == 'sale@gmail.com'}">
+<div sec:authorize="hasRole('ROLE_SALE_USER')">
     <button onclick="window.location.href='/articles/add'">Click to add new article!</button>
-</td>
+</div>
+<br>
 <button onclick="window.location.href='/logout'">Click to Log out!</button>
 </body>
 </html>

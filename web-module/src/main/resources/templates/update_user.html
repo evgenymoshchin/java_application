@@ -6,9 +6,14 @@
 </head>
 <body>
 <form action="#"
-      th:action="@{/users/update-role/{id}(id=${user.id})}" th:object="${user}" method="post">
+      th:action="@{/users/update-role}" th:object="${userDTO}" method="post">
     <tr>
         <td><b>Choose role:</b></td>
+        <td>
+            <label>
+                <input type="hidden" th:field="*{id}">
+            </label>
+        </td>
         <td>
             <label>
                 <select th:object="${roles}" th:name="role">

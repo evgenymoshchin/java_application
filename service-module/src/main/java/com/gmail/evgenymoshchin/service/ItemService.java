@@ -15,4 +15,6 @@ public interface ItemService {
     void addItem(ItemDTO itemDTO);
 
     void removeItemById(Long id);
+
+    void copyItemById(Long id);
 }

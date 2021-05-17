@@ -31,14 +31,14 @@ public class UserProfileController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUpdateUserProfilePage(@PathVariable Long id, Model model) {
-        model.addAttribute("profile", userProfileService.getById(id));
+    public String getUpdateUserProfilePage(@PathVariable Long id, Model model, UserProfileDTO userProfileDTO) {
+        userProfileDTO = userProfileService.getById(id);
+        model.addAttribute("userProfileDTO", userProfileDTO);
         return "update_profile";
     }
 
     @PostMapping("/update")
-    public String updateUserProfile(@Valid UserProfileDTO profile, BindingResult bindingResult, Model model) {
-        model.addAttribute("profile", profile);
+    public String updateUserProfile(@Valid UserProfileDTO profile, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             userProfileService.updateUserProfile(profile);
             return "redirect:/profiles/get";
