@@ -6,6 +6,8 @@ import com.gmail.evgenymoshchin.service.ReviewService;
 import com.gmail.evgenymoshchin.service.converters.ReviewServiceConverter;
 import com.gmail.evgenymoshchin.service.model.ReviewDTO;
 import com.gmail.evgenymoshchin.service.model.ReviewPageDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,16 +17,13 @@ import java.util.List;
 
 import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
+@Log4j2
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewServiceConverter reviewServiceConverter;
-
-    public ReviewServiceImpl(ReviewRepository reviewRepository, ReviewServiceConverter reviewServiceConverter) {
-        this.reviewRepository = reviewRepository;
-        this.reviewServiceConverter = reviewServiceConverter;
-    }
 
     @Transactional
     @Override
@@ -53,8 +52,27 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void changeVisibilityById(Long id) {
-        Review review = reviewRepository.findById(id);
-        review.setIsVisible(!review.getIsVisible());
+    public void changeVisibilityByIds(List<Long> selectedIds) {
+        List<Review> reviews = reviewRepository.findAll();
+        List<Long> visibleIdsFromDB = new ArrayList<>();
+        for (Review review : reviews) {
+            if (review.getIsVisible()) {
+                visibleIdsFromDB.add(review.getId());
+            }
+        }
+        for (Long id : visibleIdsFromDB) {
+            if (!selectedIds.contains(id)) {
+                log.info("This review id {}, wasn't contain in visibleIdsFromDB list, visibility will change", id);
+                Review review = reviewRepository.findById(id);
+                review.setIsVisible(!review.getIsVisible());
+            }
+        }
+        for (Long id : selectedIds) {
+            if (!visibleIdsFromDB.contains(id)) {
+                log.info("This review id {}, wasn't contain in selectedIds list, visibility will change", id);
+                Review review = reviewRepository.findById(id);
+                review.setIsVisible(!review.getIsVisible());
+            }
+        }
     }
 }

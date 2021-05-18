@@ -8,28 +8,20 @@ import com.gmail.evgenymoshchin.service.MailService;
 import com.gmail.evgenymoshchin.service.PasswordService;
 import com.gmail.evgenymoshchin.service.converters.UserServiceConverter;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 @Component
+@RequiredArgsConstructor
 public class UserServiceConverterImpl implements UserServiceConverter {
 
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final PasswordService passwordService;
     private final MailService mailService;
-
-    public UserServiceConverterImpl(PasswordEncoder passwordEncoder,
-                                    RoleRepository roleRepository,
-                                    PasswordService passwordService,
-                                    MailService mailService) {
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.passwordService = passwordService;
-        this.mailService = mailService;
-    }
 
     @Override
     public UserDTO convertUserToDTO(User user) {

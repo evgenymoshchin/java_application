@@ -15,7 +15,7 @@
             <th>article</th>
             <th>firstName</th>
             <th>lastName</th>
-            <th>link</th>
+            <th sec:authorize="hasRole('ROLE_SALE_USER')">link</th>
         </tr>
         <tr>
             <td th:text="${article.date}"></td>

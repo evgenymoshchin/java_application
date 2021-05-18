@@ -23,8 +23,11 @@
             <a th:href="@{/profiles/update/{id}(id=${profile.id})}"><span>Update profile</span></a>
         </td>
     </table>
-    <br>
-    <button onclick="window.location.href='/logout'">Click to Log out!</button>
 </form>
+<br>
+<div>
+    <button onclick="window.location.href='/logout'">Click to Log out!</button>
+    <button onclick="window.location.href='/articles/get'">Go to articles page!</button>
+</div>
 </body>
 </html>

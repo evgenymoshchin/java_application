@@ -29,9 +29,8 @@
             <td>
                 <label>
                     <label>
-                        <input type="checkbox" th:name="selectedReviews" th:value="${review.id}"
+                        <input type="checkbox" th:name="selectedIds" th:value="${review.id}"
                                th:checked="${review.isVisible eq true}"/>
-                        <input type="hidden" th:name="allIds" th:value="${review.id}"/>
                     </label>
                 </label>
             </td>
@@ -54,5 +53,9 @@
     </tr>
 </form>
 <br>
+<div>
+    <button onclick="window.location.href='/logout'">Click to Log out!</button>
+    <button onclick="window.location.href='/users/get'">Back to users page!</button>
+</div>
 </body>
 </html>

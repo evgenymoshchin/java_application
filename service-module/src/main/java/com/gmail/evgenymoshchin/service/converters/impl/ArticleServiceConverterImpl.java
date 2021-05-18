@@ -9,6 +9,7 @@ import com.gmail.evgenymoshchin.service.ArticleSummaryMaker;
 import com.gmail.evgenymoshchin.service.converters.ArticleServiceConverter;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
 import com.gmail.evgenymoshchin.service.model.CommentDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,17 +19,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@RequiredArgsConstructor
 public class ArticleServiceConverterImpl implements ArticleServiceConverter {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final ArticleSummaryMaker summaryMaker;
-
-    public ArticleServiceConverterImpl(UserRepository userRepository, CommentRepository commentRepository, ArticleSummaryMaker summaryMaker) {
-        this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
-        this.summaryMaker = summaryMaker;
-    }
 
     @Override
     public ArticleDTO convertArticleToDTO(Article article) {

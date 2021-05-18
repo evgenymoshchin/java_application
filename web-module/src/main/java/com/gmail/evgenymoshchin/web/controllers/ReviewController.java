@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_SIZE_VALUE;
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_VALUE;
@@ -45,14 +47,8 @@ public class ReviewController {
     }
 
     @PostMapping("/change")
-    public String changeVisibilityById(@RequestParam(value = "selectedReviews") List<Long> selectedIds,
-                                       @RequestParam(value = "allIds") List<Long> reviewsIds) {
-        if (selectedIds != null) {
-            reviewsIds.removeAll(selectedIds);
-            for (Long allId : reviewsIds) {
-                reviewService.changeVisibilityById(allId);
-            }
-        }
+    public String changeVisibilityById(@RequestParam(value = "selectedIds", required = false) List<Long> selectedIds) {
+        reviewService.changeVisibilityByIds(Objects.requireNonNullElse(selectedIds, Collections.emptyList()));
         return REVIEWS_GET_REDIRECTION_URL;
     }
 }
