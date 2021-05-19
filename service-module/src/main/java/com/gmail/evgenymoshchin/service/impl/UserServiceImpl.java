@@ -12,13 +12,12 @@ import com.gmail.evgenymoshchin.service.converters.UserServiceConverter;
 import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
 import com.gmail.evgenymoshchin.service.model.UserPageDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,10 +26,10 @@ import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.SU
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.USER_EXIST_EXCEPTION_MESSAGE_VALUE;
 import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
+@Log4j2
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -38,19 +37,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordService passwordService;
     private final MailService mailService;
     private final UserServiceConverter converter;
-
-    public UserServiceImpl(PasswordEncoder passwordEncoder,
-                           UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordService passwordService,
-                           MailService mailService, UserServiceConverter converter) {
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordService = passwordService;
-        this.mailService = mailService;
-        this.converter = converter;
-    }
 
     @Override
     @Transactional
@@ -91,7 +77,7 @@ public class UserServiceImpl implements UserService {
         String generatedPassword = passwordService.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(generatedPassword));
         mailService.sendEmail(user.getUsername(), generatedPassword);
-        logger.info(SUCCESSFUL_MAIL_MESSAGE, user.getUsername());
+        log.info(SUCCESSFUL_MAIL_MESSAGE, user.getUsername());
     }
 
     @Override

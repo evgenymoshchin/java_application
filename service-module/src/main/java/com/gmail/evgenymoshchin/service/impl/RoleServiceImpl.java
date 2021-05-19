@@ -4,6 +4,7 @@ import com.gmail.evgenymoshchin.repository.RoleRepository;
 import com.gmail.evgenymoshchin.repository.model.Role;
 import com.gmail.evgenymoshchin.service.RoleService;
 import com.gmail.evgenymoshchin.service.model.RoleDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,13 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
-
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     @Transactional

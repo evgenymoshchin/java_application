@@ -54,7 +54,9 @@ class ArticleServiceConverterImplTest {
         Article article = new Article();
         String testName = "name";
         article.setName(testName);
+
         ArticleDTO articleDTO = articleServiceConverter.convertArticleToDTO(article);
+
         Assertions.assertEquals(testName, articleDTO.getName());
     }
 

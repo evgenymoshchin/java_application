@@ -63,16 +63,19 @@ public class ReviewServiceImpl implements ReviewService {
         for (Long id : visibleIdsFromDB) {
             if (!selectedIds.contains(id)) {
                 log.info("This review id {}, wasn't contain in visibleIdsFromDB list, visibility will change", id);
-                Review review = reviewRepository.findById(id);
-                review.setIsVisible(!review.getIsVisible());
+                findReviewByIdUpdateVisible(id);
             }
         }
         for (Long id : selectedIds) {
             if (!visibleIdsFromDB.contains(id)) {
                 log.info("This review id {}, wasn't contain in selectedIds list, visibility will change", id);
-                Review review = reviewRepository.findById(id);
-                review.setIsVisible(!review.getIsVisible());
+                findReviewByIdUpdateVisible(id);
             }
         }
+    }
+
+    private void findReviewByIdUpdateVisible(Long id) {
+        Review review = reviewRepository.findById(id);
+        review.setIsVisible(!review.getIsVisible());
     }
 }

@@ -84,9 +84,10 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findById(articleDTO.getId());
         article.setName(articleDTO.getName());
         article.setCreatedBy(LocalDate.now());
-        article.setArticleBody(articleDTO.getArticleBody());
-        if (Objects.nonNull(articleDTO.getArticleBody())) {
-            String summary = summaryMaker.getSummaryOfArticle(articleDTO.getArticleBody());
+        String articleBody = articleDTO.getArticleBody();
+        if (Objects.nonNull(articleBody)) {
+            article.setArticleBody(articleBody);
+            String summary = summaryMaker.getSummaryOfArticle(articleBody);
             article.setSummary(summary);
         }
     }

@@ -44,5 +44,6 @@ public class Article {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @EqualsAndHashCode.Exclude
     private List<Comment> comments = new ArrayList<>();
 }

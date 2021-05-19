@@ -51,12 +51,14 @@ public class User {
             orphanRemoval = true,
             mappedBy = "user"
     )
+    @EqualsAndHashCode.Exclude
     private List<Review> reviews = new ArrayList<>();
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             mappedBy = "user"
     )
+    @EqualsAndHashCode.Exclude
     private List<Article> articles = new ArrayList<>();
     @OneToOne(
             fetch = FetchType.LAZY,

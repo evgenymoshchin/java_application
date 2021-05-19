@@ -1,4 +1,4 @@
-package com.gmail.evgenymoshchin.service;
+package com.gmail.evgenymoshchin.service.impl;
 
 import com.gmail.evgenymoshchin.repository.ArticleRepository;
 import com.gmail.evgenymoshchin.repository.model.Article;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ArticleServiceTest {
+class ArticleServiceImplTest {
 
     @Mock
     private ArticleRepository articleRepository;

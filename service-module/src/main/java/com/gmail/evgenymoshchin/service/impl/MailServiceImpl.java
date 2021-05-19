@@ -1,6 +1,7 @@
 package com.gmail.evgenymoshchin.service.impl;
 
 import com.gmail.evgenymoshchin.service.MailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -9,13 +10,10 @@ import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MA
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.MAIL_TEXT_NOTIFICATION_VALUE;
 
 @Component
+@RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
     private final JavaMailSender javaMailSender;
-
-    public MailServiceImpl(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
 
     @Override
     public void sendEmail(String username, String password) {

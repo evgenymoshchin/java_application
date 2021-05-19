@@ -1,7 +1,9 @@
 package com.gmail.evgenymoshchin.service.model;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
