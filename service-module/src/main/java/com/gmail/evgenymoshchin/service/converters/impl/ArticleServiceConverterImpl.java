@@ -56,9 +56,10 @@ public class ArticleServiceConverterImpl implements ArticleServiceConverter {
     public Article convertDTOtoArticle(ArticleDTO articleDTO, String username) {
         Article article = new Article();
         article.setName(articleDTO.getName());
-        article.setArticleBody(articleDTO.getArticleBody());
-        if (Objects.nonNull(articleDTO.getArticleBody())) {
-            String summary = summaryMaker.getSummaryOfArticle(articleDTO.getArticleBody());
+        String articleBody = articleDTO.getArticleBody();
+        if (Objects.nonNull(articleBody)) {
+            article.setArticleBody(articleBody);
+            String summary = summaryMaker.getSummaryOfArticle(articleBody);
             article.setSummary(summary);
         }
         article.setCreatedBy(LocalDate.now());

@@ -1,12 +1,14 @@
-package com.gmail.evgenymoshchin.web.controllers;
+package com.gmail.evgenymoshchin.web.controllers.unit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.evgenymoshchin.service.ItemService;
+import com.gmail.evgenymoshchin.web.controllers.api.ItemAPIController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -29,14 +31,25 @@ class ItemAPIControllerTest {
     @MockBean
     ItemService itemService;
 
+    @WithMockUser(roles = "SECURE_API_USER")
     @Test
-    void shouldDoGetRequestForItems() throws Exception {
+    void shouldDoGetRequestForItemsWithValidUserRoleAndReturn200() throws Exception {
         mockMvc.perform(
                 get(API_ITEMS_URL)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }
 
+    @WithMockUser(roles = {"SALE_USER","CUSTOMER_USER","ADMINISTRATOR"})
+    @Test
+    void shouldDoGetRequestForItemsWithInvalidUserRoleAndReturn403() throws Exception {
+        mockMvc.perform(
+                get(API_ITEMS_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isForbidden());
+    }
+
+    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldVerifyThatGetRequestCallItemService() throws Exception {
         mockMvc.perform(
@@ -46,6 +59,7 @@ class ItemAPIControllerTest {
         verify(itemService, times(1)).getItems();
     }
 
+    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldReturnEmptyListWhenDoGetRequestItems() throws Exception {
         MvcResult result = mockMvc.perform(

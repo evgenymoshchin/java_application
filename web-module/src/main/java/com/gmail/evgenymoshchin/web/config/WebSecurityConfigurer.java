@@ -4,6 +4,7 @@ import com.gmail.evgenymoshchin.web.config.handlers.AppUrlSuccessHandler;
 import com.gmail.evgenymoshchin.web.constants.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,6 +26,7 @@ import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.UPDATE_ARTIC
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.USERS_CONTROLLER_MAPPING_URL;
 
 @Configuration
+@Order(2)
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired

@@ -1,4 +1,4 @@
-package com.gmail.evgenymoshchin.web.controllers;
+package com.gmail.evgenymoshchin.web.controllers.web;
 
 import com.gmail.evgenymoshchin.service.UserProfileService;
 import com.gmail.evgenymoshchin.service.UserService;

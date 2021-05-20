@@ -1,4 +1,4 @@
-package com.gmail.evgenymoshchin.web.controllers;
+package com.gmail.evgenymoshchin.web.controllers.api;
 
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 import com.gmail.evgenymoshchin.service.UserService;

@@ -1,9 +1,8 @@
-package com.gmail.evgenymoshchin.web.controllers;
+package com.gmail.evgenymoshchin.web.controllers.web;
 
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 import com.gmail.evgenymoshchin.service.RoleService;
 import com.gmail.evgenymoshchin.service.UserService;
-import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
 import com.gmail.evgenymoshchin.service.model.UserPageDTO;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,6 @@ import java.util.List;
 
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_SIZE_VALUE;
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_VALUE;
-import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.ERROR_ATTRIBUTE_VALUE;
-import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.EXIST_USER_MESSAGE_VALUE;
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.PAGE;
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.PAGE_SIZE;
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.ROLES_ATTRIBUTE_VALUE;
@@ -50,14 +47,8 @@ public class UserController {
     public String addUser(@Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
         model.addAttribute(ROLES_ATTRIBUTE_VALUE, roleService.findAll());
         if (!bindingResult.hasErrors()) {
-            try {
-                userService.addUser(userDTO);
-                return USERS_GET_REDIRECTION_URL;
-            } catch (UserAlreadyExistException exception) {
-                log.error(exception.getMessage(), exception);
-                model.addAttribute(ERROR_ATTRIBUTE_VALUE, EXIST_USER_MESSAGE_VALUE);
-                return "add_user";
-            }
+            userService.addUser(userDTO);
+            return USERS_GET_REDIRECTION_URL;
         } else {
             return "add_user";
         }

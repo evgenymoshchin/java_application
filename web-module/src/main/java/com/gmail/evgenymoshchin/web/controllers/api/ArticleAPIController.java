@@ -1,4 +1,4 @@
-package com.gmail.evgenymoshchin.web.controllers;
+package com.gmail.evgenymoshchin.web.controllers.api;
 
 import com.gmail.evgenymoshchin.service.ArticleService;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
