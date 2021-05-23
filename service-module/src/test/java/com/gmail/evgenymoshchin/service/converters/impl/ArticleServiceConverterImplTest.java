@@ -21,24 +21,19 @@ class ArticleServiceConverterImplTest {
 
     @Mock
     private UserRepository userRepository;
-
+    @Mock
+    private ArticleSummaryMakerImpl summaryMaker;
     @InjectMocks
     private ArticleServiceConverterImpl articleServiceConverter;
-//    private ArticleSummaryMakerImpl summaryMaker;
-
-    @Test
-    void shouldConvertArticleToDTOAndReturnNotNullObject() {
-        Article article = new Article();
-        ArticleDTO articleDTO = articleServiceConverter.convertArticleToDTO(article);
-        Assertions.assertNotNull(articleDTO);
-    }
 
     @Test
     void shouldConvertArticleToDTOAndReturnCorrectId() {
         Article article = new Article();
         Long testId = 1L;
         article.setId(testId);
+
         ArticleDTO articleDTO = articleServiceConverter.convertArticleToDTO(article);
+
         Assertions.assertEquals(testId, articleDTO.getId());
     }
 
@@ -47,7 +42,9 @@ class ArticleServiceConverterImplTest {
         Article article = new Article();
         String articleBody = "body";
         article.setArticleBody(articleBody);
+
         ArticleDTO articleDTO = articleServiceConverter.convertArticleToDTO(article);
+
         Assertions.assertEquals(articleBody, articleDTO.getArticleBody());
     }
 
@@ -67,7 +64,9 @@ class ArticleServiceConverterImplTest {
         Article article = new Article();
         String summary = "summary";
         article.setSummary(summary);
+
         ArticleDTO articleDTO = articleServiceConverter.convertArticleToDTO(article);
+
         Assertions.assertEquals(summary, articleDTO.getSummary());
     }
 
@@ -76,7 +75,9 @@ class ArticleServiceConverterImplTest {
         Article article = new Article();
         LocalDate date = LocalDate.now();
         article.setCreatedBy(date);
+
         ArticleDTO articleDTO = articleServiceConverter.convertArticleToDTO(article);
+
         Assertions.assertEquals(date, articleDTO.getDate());
     }
 
@@ -85,59 +86,64 @@ class ArticleServiceConverterImplTest {
         User user = new User();
         Long id = 1L;
         user.setId(id);
+
         when(userRepository.findById(id)).thenReturn(user);
+
         Article article = new Article();
         article.setUser(user);
+
         ArticleDTO articleDTO = articleServiceConverter.convertArticleToDTO(article);
+
         Assertions.assertEquals(id, articleDTO.getUserId());
     }
-
-    @Test
-    void shouldConvertDTOToArticleAndReturnNotNullObject() {
-        ArticleDTO articleDTO = new ArticleDTO();
-        Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, "");
-        Assertions.assertNotNull(article);
-    }
-
-//TODO NullPointerException (ArticleServiceConverterImpl.java:65)
-
-//    @Test
-//    void shouldConvertDTOToArticleAndReturnCorrectArticleBody() {
-//        ArticleDTO articleDTO = new ArticleDTO();
-//        String articleBody = "body";
-//        articleDTO.setArticleBody(articleBody);
-//        Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, "");
-//        Assertions.assertEquals(articleBody, article.getArticleBody());
-//    }
-//        String summary = "summary";
-//        when(summaryMaker.getSummaryOfArticle(articleBody)).thenReturn(summary);
 
     @Test
     void shouldConvertDTOToArticleAndReturnCorrectName() {
         ArticleDTO articleDTO = new ArticleDTO();
         String testName = "name";
         articleDTO.setName(testName);
+
         Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, "");
+
         Assertions.assertEquals(testName, article.getName());
     }
 
-    //TODO NullPointerException (ArticleServiceConverterImpl.java:65)
+    @Test
+    void shouldConvertDTOToArticleAndReturnCorrectArticleBody() {
+        ArticleDTO articleDTO = new ArticleDTO();
+        String articleBody = "body";
+        String summary = "summary";
+        articleDTO.setArticleBody(articleBody);
 
-//    @Test
-//    void shouldConvertDTOToArticleAndReturnCorrectSummary() {
-//        ArticleDTO articleDTO = new ArticleDTO();
-//        String summary = "summary";
-//        articleDTO.setSummary(summary);
-//        Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, "");
-//        Assertions.assertEquals(summary, article.getSummary());
-//    }
+        when(summaryMaker.getSummaryOfArticle(articleBody)).thenReturn(summary);
+
+        Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, "");
+
+        Assertions.assertEquals(articleBody, article.getArticleBody());
+    }
+
+    @Test
+    void shouldConvertDTOToArticleAndReturnCorrectSummary() {
+        ArticleDTO articleDTO = new ArticleDTO();
+        String articleBody = "body";
+        String summary = "summary";
+        articleDTO.setArticleBody(articleBody);
+
+        when(summaryMaker.getSummaryOfArticle(articleBody)).thenReturn(summary);
+
+        Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, "");
+
+        Assertions.assertEquals(summary, article.getSummary());
+    }
 
     @Test
     void shouldConvertDTOToArticleAndReturnCorrectDate() {
         ArticleDTO articleDTO = new ArticleDTO();
         LocalDate date = LocalDate.now();
         articleDTO.setDate(date);
+
         Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, "");
+
         Assertions.assertEquals(date, article.getCreatedBy());
     }
 
@@ -148,10 +154,50 @@ class ArticleServiceConverterImplTest {
         Long id = 1L;
         user.setUsername(userName);
         user.setId(id);
+
         when(userRepository.findByUsername(userName)).thenReturn(user);
+
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setUserId(user.getId());
+
         Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, userName);
+
         Assertions.assertEquals(id, article.getUser().getId());
+    }
+
+    @Test
+    void shouldConvertDTOToArticleAndReturnCorrectUserFirstName() {
+        User user = new User();
+        String userName = "test";
+        String firstName = "test";
+        user.setUsername(userName);
+        user.setFirstName(firstName);
+
+        when(userRepository.findByUsername(userName)).thenReturn(user);
+
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setUserId(user.getId());
+
+        Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, userName);
+
+        Assertions.assertEquals(firstName, article.getUser().getFirstName());
+    }
+
+    @Test
+    void shouldConvertDTOToArticleAndReturnCorrectUserLastName() {
+        User user = new User();
+        String userName = "test";
+        String lastName = "test";
+        user.setUsername(userName);
+        user.setLastName(lastName);
+
+        when(userRepository.findByUsername(userName)).thenReturn(user);
+
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setUserId(user.getId());
+
+        Article article = articleServiceConverter.convertDTOtoArticle(articleDTO, userName);
+
+        Assertions.assertEquals(lastName, article.getUser().getLastName());
     }
 }

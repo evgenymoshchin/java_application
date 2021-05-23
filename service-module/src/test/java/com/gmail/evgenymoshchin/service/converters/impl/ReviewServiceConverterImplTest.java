@@ -25,13 +25,6 @@ class ReviewServiceConverterImplTest {
     private ReviewServiceConverterImpl reviewServiceConverter;
 
     @Test
-    void shouldConvertReviewToDTOAndReturnNotNullObject() {
-        Review review = new Review();
-        ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
-        Assertions.assertNotNull(reviewDTO);
-    }
-
-    @Test
     void shouldConvertReviewToDTOAndReturnCorrectId() {
         Review review = new Review();
         Long testId = 1L;

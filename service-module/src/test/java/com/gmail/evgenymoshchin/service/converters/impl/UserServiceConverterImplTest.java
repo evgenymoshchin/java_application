@@ -33,13 +33,6 @@ class UserServiceConverterImplTest {
     private UserServiceConverterImpl userServiceConverter;
 
     @Test
-    void shouldConvertUserToDTOAndReturnNotNullObject() {
-        User user = new User();
-        UserDTO userDTO = userServiceConverter.convertUserToDTO(user);
-        Assertions.assertNotNull(userDTO);
-    }
-
-    @Test
     void shouldConvertUserToDTOAndReturnCorrectId() {
         User user = new User();
         Long testId = 1L;
@@ -92,13 +85,6 @@ class UserServiceConverterImplTest {
         user.setRole(role);
         UserDTO userDTO = userServiceConverter.convertUserToDTO(user);
         Assertions.assertEquals(role.getName(), userDTO.getRole());
-    }
-
-    @Test
-    void shouldConvertDTOToUserAndReturnNotNullObject() {
-        UserDTO userDTO = new UserDTO();
-        User user = userServiceConverter.convertDTOtoUser(userDTO);
-        Assertions.assertNotNull(user);
     }
 
     @Test

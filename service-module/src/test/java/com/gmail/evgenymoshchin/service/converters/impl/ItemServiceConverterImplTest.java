@@ -18,13 +18,6 @@ class ItemServiceConverterImplTest {
     private ItemServiceConverterImpl itemServiceConverter;
 
     @Test
-    void shouldConvertItemToDTOAndReturnNotNullObject() {
-        Item item = new Item();
-        ItemDTO itemDTO = itemServiceConverter.convertItemToDTO(item);
-        Assertions.assertNotNull(itemDTO);
-    }
-
-    @Test
     void shouldConvertItemToDTOAndReturnCorrectId() {
         Item item = new Item();
         Long testId = 1L;
@@ -67,13 +60,6 @@ class ItemServiceConverterImplTest {
         item.setPrice(price);
         ItemDTO itemDTO = itemServiceConverter.convertItemToDTO(item);
         Assertions.assertEquals(price, itemDTO.getPrice());
-    }
-
-    @Test
-    void shouldConvertDTOToItemAndReturnNotNullObject() {
-        ItemDTO itemDTO = new ItemDTO();
-        Item item = itemServiceConverter.convertDTOtoItem(itemDTO);
-        Assertions.assertNotNull(item);
     }
 
     @Test

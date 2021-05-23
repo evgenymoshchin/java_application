@@ -16,13 +16,6 @@ class UserProfileServiceConverterImplTest {
     private UserProfileServiceConverterImpl userProfileServiceConverter;
 
     @Test
-    void shouldConvertUserToUserProfileDTOAndReturnNotNullObject() {
-        User user = new User();
-        UserProfileDTO profile = userProfileServiceConverter.convertUserProfileToDTO(user);
-        Assertions.assertNotNull(profile);
-    }
-
-    @Test
     void shouldConvertUserToUserProfileDTOAndReturnCorrectId() {
         Long testId = 1L;
         User user = new User();

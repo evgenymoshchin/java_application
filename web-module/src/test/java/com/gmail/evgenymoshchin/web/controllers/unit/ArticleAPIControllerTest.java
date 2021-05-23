@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,9 +28,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = ArticleAPIController.class)
+@ActiveProfiles("test")
 class ArticleAPIControllerTest {
 
     public static final String API_ARTICLES_URL = "/api/articles";
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -36,25 +40,6 @@ class ArticleAPIControllerTest {
     @MockBean
     private ArticleService articleService;
 
-    @WithMockUser(roles = "SECURE_API_USER")
-    @Test
-    void shouldDoGetRequestForArticlesWithValidUserRoleAndReturn200() throws Exception {
-        mockMvc.perform(
-                get(API_ARTICLES_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
-    }
-
-    @WithMockUser(roles = {"SALE_USER", "CUSTOMER_USER", "ADMINISTRATOR"})
-    @Test
-    void shouldDoGetRequestForArticlesWithInvalidUserRoleAndReturn403() throws Exception {
-        mockMvc.perform(
-                get(API_ARTICLES_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isForbidden());
-    }
-
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldVerifyThatGetRequestCallArticleService() throws Exception {
         mockMvc.perform(
@@ -64,7 +49,6 @@ class ArticleAPIControllerTest {
         verify(articleService, times(1)).findAll();
     }
 
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldReturnEmptyListWhenDoGetRequestArticles() throws Exception {
         MvcResult result = mockMvc.perform(
@@ -75,7 +59,6 @@ class ArticleAPIControllerTest {
         assertThat(resultString).isEqualToIgnoringCase(objectMapper.writeValueAsString(Collections.emptyList()));
     }
 
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldReturnListOfArticlesWhenDoGetRequestArticles() throws Exception {
         ArticleDTO articleDTO = new ArticleDTO();
@@ -92,20 +75,21 @@ class ArticleAPIControllerTest {
         assertThat(resultString).isEqualToIgnoringCase(objectMapper.writeValueAsString(articles));
     }
 
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldAddArticleWithValidParametersAndReturn201() throws Exception {
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setName("testArticleName");
         articleDTO.setArticleBody("testArticleBody");
+        Principal mockPrincipal = mock(Principal.class);
+        when(mockPrincipal.getName()).thenReturn("username");
         mockMvc.perform(
                 post(API_ARTICLES_URL)
+                        .principal(mockPrincipal)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(articleDTO))
         ).andExpect(status().isCreated());
     }
 
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldNotAddArticleWithNullNameAndReturn400() throws Exception {
         ArticleDTO articleDTO = new ArticleDTO();
@@ -118,7 +102,6 @@ class ArticleAPIControllerTest {
         ).andExpect(status().isBadRequest());
     }
 
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldNotAddArticleWithEmptyArticleBodyAndReturn400() throws Exception {
         ArticleDTO articleDTO = new ArticleDTO();
@@ -131,7 +114,6 @@ class ArticleAPIControllerTest {
         ).andExpect(status().isBadRequest());
     }
 
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     void shouldReturnArticleWhenDoGetRequestById() throws Exception {
         ArticleDTO articleDTO = new ArticleDTO();
@@ -148,7 +130,6 @@ class ArticleAPIControllerTest {
         assertThat(resultString).isEqualToIgnoringCase(objectMapper.writeValueAsString(articleDTO));
     }
 
-    @WithMockUser(roles = "SECURE_API_USER")
     @Test
     public void shouldVerifyThatDeleteRequestCallArticleService() throws Exception {
         Long validId = 1L;
