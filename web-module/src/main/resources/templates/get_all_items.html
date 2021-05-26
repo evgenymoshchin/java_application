@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Items</title>
+</head>
+<body>
+<h1>List of items</h1>
+<div sec:authorize="isAuthenticated()">
+    You are authenticated as <span sec:authentication="name"></span></div>
+<form th:action="@{/items/get}">
+    <table border="1">
+        <tr>
+            <th>name</th>
+            <th>unique number</th>
+            <th>price</th>
+            <th>link</th>
+            <th>delete</th>
+            <th>copy</th>
+        </tr>
+        <tr th:each="item:${itemPage.items}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.uuid}"></td>
+            <td th:text="${item.price}"></td>
+            <td>
+                <a th:href="@{/items/show-item-by-id/(id=${item.id})}"><span>More details</span></a>
+            </td>
+            <td>
+                <a th:href="@{/items/delete-item-by-id/(id=${item.id})}"><span>Delete this item</span></a>
+            </td>
+            <td>
+                <a th:href="@{/items/copy-item/(id=${item.id})}"><span>Copy this item</span></a>
+            </td>
+        </tr>
+    </table>
+    <td th:if="${itemPage.pagesCount gt 0}"
+        th:each="pageNumber : ${itemPage.numbersOfPages}">
+        <a th:href="@{'/items/get?page=' + ${pageNumber}}"
+           th:text="${pageNumber}"
+           th:name="page" th:value="${pageNumber}"> </a>
+    </td>
+</form>
+<br>
+<div>
+    <button onclick="window.location.href='/logout'">Click to Log out!</button>
+    <button onclick="window.location.href='/articles/get'">Go to articles page!</button>
+</div>
+</body>
+</html>

@@ -5,18 +5,16 @@ import com.gmail.evgenymoshchin.repository.model.Review;
 import com.gmail.evgenymoshchin.repository.model.User;
 import com.gmail.evgenymoshchin.service.converters.ReviewServiceConverter;
 import com.gmail.evgenymoshchin.service.model.ReviewDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 @Component
+@RequiredArgsConstructor
 public class ReviewServiceConverterImpl implements ReviewServiceConverter {
 
     private final UserRepository userRepository;
-
-    public ReviewServiceConverterImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public ReviewDTO convertReviewToDTO(Review review) {

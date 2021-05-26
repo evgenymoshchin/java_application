@@ -4,6 +4,7 @@ import com.gmail.evgenymoshchin.web.config.handlers.AppUrlSuccessHandler;
 import com.gmail.evgenymoshchin.web.constants.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,14 +12,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ACCESS_DENIED_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ADD_ARTICLE_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ARTICLES_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.DEFAULT_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.DELETE_ARTICLE_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.GET_ARTICLES_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.ITEMS_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.LOGIN_PAGE_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.PROFILES_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.REVIEWS_CONTROLLER_MAPPING_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.SHOW_ARTICLE_URL;
+import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.UPDATE_ARTICLE_URL;
 import static com.gmail.evgenymoshchin.web.constants.ConfigConstant.USERS_CONTROLLER_MAPPING_URL;
 
 @Configuration
+@Order(2)
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -41,8 +49,12 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(USERS_CONTROLLER_MAPPING_URL, REVIEWS_CONTROLLER_MAPPING_URL)
                 .hasRole(RoleEnum.ADMINISTRATOR.name())
-                .antMatchers(ARTICLES_URL, PROFILES_URL)
+                .antMatchers(PROFILES_URL)
                 .hasRole(RoleEnum.CUSTOMER_USER.name())
+                .antMatchers(ARTICLES_URL + DELETE_ARTICLE_URL, ARTICLES_URL + ADD_ARTICLE_URL, ARTICLES_URL + UPDATE_ARTICLE_URL, ITEMS_URL)
+                .hasRole(RoleEnum.SALE_USER.name())
+                .antMatchers(ARTICLES_URL + GET_ARTICLES_URL, ARTICLES_URL + SHOW_ARTICLE_URL)
+                .hasAnyRole(RoleEnum.CUSTOMER_USER.name(), RoleEnum.SALE_USER.name())
                 .antMatchers(LOGIN_PAGE_URL, DEFAULT_URL, ACCESS_DENIED_URL)
                 .permitAll()
                 .and()

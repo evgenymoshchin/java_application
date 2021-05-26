@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
 </head>
 <body>
 <h1>List of users</h1>
+<div sec:authorize="isAuthenticated()">
+    You are authenticated as <span sec:authentication="name"></span></div>
 <form action="#" th:action="@{/users/remove}" method="post">
     <table border="1">
         <tr>
@@ -24,10 +27,11 @@
             <td th:text="${user.username}"></td>
             <td th:text="${user.role}"></td>
             <td>
-                <a th:if="${user.id} != 1" th:href="@{/users/update-role/{id}(id=${user.id})}"><span>ROLE</span></a>
+                <a th:if="${user.username} != ${#authorization.getAuthentication().name}"
+                   th:href="@{/users/update-role/{id}(id=${user.id})}"><span>ROLE</span></a>
                 <a th:href="@{/users/update-password/{id}(id=${user.id})}"><span>PASSWORD</span></a>
             </td>
-            <td th:if="${user.id} != 1">
+            <td th:if="${user.username} != ${#authorization.getAuthentication().name}">
                 <label>
                     <label>
                         <input type="checkbox" th:name="selectedUsers" th:value="*{user.id}"/>
@@ -50,6 +54,10 @@
     </tr>
 </form>
 <br>
-<button onclick="window.location.href='/users/add'">Click to register new user!</button>
+<div>
+    <button onclick="window.location.href='/users/add'">Register new user!</button>
+    <button onclick="window.location.href='/logout'">Click to Log out!</button>
+    <button onclick="window.location.href='/reviews/get'">Go to the reviews!</button>
+</div>
 </body>
 </html>

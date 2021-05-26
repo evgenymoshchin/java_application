@@ -1,10 +1,8 @@
 package com.gmail.evgenymoshchin.repository.model;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,5 +44,6 @@ public class Article {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @EqualsAndHashCode.Exclude
     private List<Comment> comments = new ArrayList<>();
 }

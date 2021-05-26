@@ -11,4 +11,5 @@ public class CommentDTO {
     private String lastName;
     private LocalDate date;
     private String commentBody;
+    private Long articleId;
 }

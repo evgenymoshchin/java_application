@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Denied page</title>
 </head>
 <body>
 <h1>Access denied!</h1>
+<div sec:authorize="isAuthenticated()">
+    You are authenticated as: <span sec:authentication="name"></span></div>
 <br>
 <button onclick="window.location.href='/logout'">Click to Log out!</button>
 </body>

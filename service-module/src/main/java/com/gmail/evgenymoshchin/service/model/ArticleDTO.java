@@ -1,7 +1,9 @@
 package com.gmail.evgenymoshchin.service.model;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
@@ -24,9 +26,6 @@ public class ArticleDTO {
     @NotEmpty
     @Size(max = 20)
     private String name;
-    @NotNull
-    @NotEmpty
-    @Size(max = 200)
     private String summary;
     private LocalDate date;
     private Long userId;

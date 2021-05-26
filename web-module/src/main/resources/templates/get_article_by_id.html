@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Article page</title>
@@ -14,12 +15,18 @@
             <th>article</th>
             <th>firstName</th>
             <th>lastName</th>
+            <th sec:authorize="hasRole('ROLE_SALE_USER')">link</th>
         </tr>
-        <td th:text="${article.date}"></td>
-        <td th:text="${article.name}"></td>
-        <td th:text="${article.articleBody}"></td>
-        <td th:text="${article.firstName}"></td>
-        <td th:text="${article.lastName}"></td>
+        <tr>
+            <td th:text="${article.date}"></td>
+            <td th:text="${article.name}"></td>
+            <td th:text="${article.articleBody}"></td>
+            <td th:text="${article.firstName}"></td>
+            <td th:text="${article.lastName}"></td>
+            <td sec:authorize="hasRole('ROLE_SALE_USER')">
+                <a th:href="@{/articles/update/(id=${article.id})}"><span>Update article</span></a>
+            </td>
+        </tr>
     </table>
     <br>
     <h2>Actual comments for this article</h2>
@@ -35,6 +42,9 @@
             <td th:text="${comment.lastName}"></td>
             <td th:text="${comment.date}"></td>
             <td th:text="${comment.commentBody}"></td>
+            <td sec:authorize="hasRole('ROLE_SALE_USER')">
+                <a th:href="@{/articles/delete-comment/(id=${comment.id})}"><span>Delete comment</span></a>
+            </td>
         </tr>
     </table>
     <tr>

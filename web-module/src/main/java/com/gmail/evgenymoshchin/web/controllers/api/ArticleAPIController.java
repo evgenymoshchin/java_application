@@ -1,10 +1,9 @@
-package com.gmail.evgenymoshchin.web.controllers;
+package com.gmail.evgenymoshchin.web.controllers.api;
 
 import com.gmail.evgenymoshchin.service.ArticleService;
-import com.gmail.evgenymoshchin.service.UserService;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,20 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.lang.invoke.MethodHandles;
 import java.security.Principal;
 import java.util.List;
 
+@Log4j2
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/articles")
 public class ArticleAPIController {
 
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private final ArticleService articleService;
-
-    public ArticleAPIController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
 
     @GetMapping
     public List<ArticleDTO> getArticles() {
@@ -48,7 +43,7 @@ public class ArticleAPIController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             articleService.addArticle(article, principal.getName());
-            logger.info("Added article with name {}", article.getName());
+            log.info("Added article with name {}", article.getName());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }

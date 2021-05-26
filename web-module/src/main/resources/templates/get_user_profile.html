@@ -14,7 +14,6 @@
             <th>address</th>
             <th>telephone</th>
             <th>link</th>
-
         </tr>
         <td th:text="${profile.firstName}"></td>
         <td th:text="${profile.lastName}"></td>
@@ -24,12 +23,11 @@
             <a th:href="@{/profiles/update/{id}(id=${profile.id})}"><span>Update profile</span></a>
         </td>
     </table>
-    <tr>
-        <br>
-        <td>
-            <a th:href="@{/profiles/get}">Back!</a>
-        </td>
-    </tr>
 </form>
+<br>
+<div>
+    <button onclick="window.location.href='/logout'">Click to Log out!</button>
+    <button onclick="window.location.href='/articles/get'">Go to articles page!</button>
+</div>
 </body>
 </html>

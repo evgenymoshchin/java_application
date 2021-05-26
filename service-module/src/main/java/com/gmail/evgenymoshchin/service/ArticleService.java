@@ -15,4 +15,8 @@ public interface ArticleService {
     void addArticle(ArticleDTO article, String username);
 
     void deleteArticleById(Long id);
+
+    void updateArticle(ArticleDTO article);
+
+    void deleteArticleCommentById(Long commentId);
 }

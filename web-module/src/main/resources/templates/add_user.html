@@ -35,7 +35,6 @@
                     <input type="text" th:field="*{username}">
                 </label></td>
             <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</td>
-            <td th:if="${error}"  th:text="${error}">Error</td>
         </tr>
         <tr>
             <td><b>Choose role:</b></td>
@@ -56,5 +55,9 @@
         </tr>
     </table>
 </form>
+<div>
+    <button onclick="window.location.href='/logout'">Click to Log out!</button>
+    <button onclick="window.location.href='/users/get'">Go to the users page!</button>
+</div>
 </body>
 </html>

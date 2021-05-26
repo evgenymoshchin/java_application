@@ -6,21 +6,18 @@ import com.gmail.evgenymoshchin.repository.model.UserInformation;
 import com.gmail.evgenymoshchin.service.UserProfileService;
 import com.gmail.evgenymoshchin.service.converters.UserProfileServiceConverter;
 import com.gmail.evgenymoshchin.service.model.UserProfileDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserRepository userRepository;
     private final UserProfileServiceConverter converter;
-
-    public UserProfileServiceImpl(UserRepository userRepository, UserProfileServiceConverter converter) {
-        this.userRepository = userRepository;
-        this.converter = converter;
-    }
 
     @Override
     @Transactional
