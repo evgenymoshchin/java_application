@@ -8,6 +8,7 @@ import com.gmail.evgenymoshchin.service.model.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Component
@@ -31,5 +32,24 @@ public class ReviewServiceConverterImpl implements ReviewServiceConverter {
             reviewDTO.setPatronymic(user.getPatronymic());
         }
         return reviewDTO;
+    }
+
+    @Override
+    public Review convertDTOToReview(ReviewDTO reviewDTO, String username) {
+        Review review = new Review();
+        review.setReviewBody(reviewDTO.getReviewBody());
+        review.setIsVisible(Boolean.FALSE);
+        review.setCreatedBy(LocalDate.now());
+        if (Objects.nonNull(userRepository.findByUsername(username))) {
+            User user = userRepository.findByUsername(username);
+            review.setUser(user);
+        } else {
+            User user = new User();
+            user.setLastName(username);
+            user.setFirstName(username);
+            user.setUsername(username);
+            review.setUser(user);
+        }
+        return review;
     }
 }

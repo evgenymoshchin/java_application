@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<body>
+<h1>List of orders</h1>
+<div sec:authorize="isAuthenticated()">
+    You are authenticated as <span sec:authentication="name"></span></div>
+<form th:action="@{/orders/show}">
+    <table border="1">
+        <tr>
+            <th>number of order</th>
+            <th>status</th>
+            <th>item</th>
+            <th>count of items</th>
+            <th>final price</th>
+            <th sec:authorize="hasRole('ROLE_SALE_USER')">link</th>
+        </tr>
+        <tr th:each="item:${itemPage.items}">
+            <td th:text="${item.orderId}"></td>
+            <td th:text="${item.statusEnum}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.count}"></td>
+            <td th:text="${item.finalPrice}"></td>
+            <td sec:authorize="hasRole('ROLE_SALE_USER')">
+                <a th:href="@{/orders/show-order-by-id/(id=${item.orderId})}"><span>More details</span></a>
+            </td>
+        </tr>
+    </table>
+    <div th:if="${itemPage.pagesCount gt 0}"
+         th:each="pageNumber : ${itemPage.numbersOfPages}">
+        <a th:href="@{'/orders/show?page=' + ${pageNumber}}"
+           th:text="${pageNumber}"
+           th:name="page" th:value="${pageNumber}"> </a>
+    </div>
+</form>
+<br>
+<div>
+    <button onclick="window.location.href='/items/get'">Go to items page!</button>
+    <button onclick="window.location.href='/articles/get'">Go to articles page!</button>
+    <button onclick="window.location.href='/logout'">Click to Log out!</button>
+</div>
+<br>
+</body>
+</html>

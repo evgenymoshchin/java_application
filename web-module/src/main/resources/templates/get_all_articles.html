@@ -44,12 +44,13 @@
 <br>
 <div sec:authorize="hasRole('ROLE_SALE_USER')">
     <button onclick="window.location.href='/articles/add'">Click to add new article!</button>
-    <button onclick="window.location.href='/items/get'">Go to items page!</button>
 </div>
 <div sec:authorize="hasRole('ROLE_CUSTOMER_USER')">
     <button onclick="window.location.href='/profiles/get'">Go to profile page!</button>
 </div>
 <br>
+<button onclick="window.location.href='/items/get'">Go to items page!</button>
+<button onclick="window.location.href='/orders/show'">Go to orders page!</button>
 <button onclick="window.location.href='/logout'">Click to Log out!</button>
 </body>
 </html>

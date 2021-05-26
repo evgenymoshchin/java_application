@@ -8,15 +8,15 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 
 import static com.gmail.evgenymoshchin.repository.impl.constant.QueryConstants.FIND_ROLE_BY_NAME_QUERY;
-import static com.gmail.evgenymoshchin.repository.impl.constant.QueryConstants.ROLE_NAME_VALUE;
+import static com.gmail.evgenymoshchin.repository.impl.constant.QueryConstants.NAME_VALUE;
 
 @Repository
 public class RoleRepositoryImpl extends GenericRepositoryImpl<Long, Role> implements RoleRepository {
 
     @Override
-    public Role findByRoleByName(RoleEnum roleEnum) {
+    public Role findRoleByName(RoleEnum roleEnum) {
         Query query = entityManager.createQuery(FIND_ROLE_BY_NAME_QUERY);
-        query.setParameter(ROLE_NAME_VALUE, roleEnum);
+        query.setParameter(NAME_VALUE, roleEnum);
         return (Role) query.getSingleResult();
     }
 }

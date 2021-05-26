@@ -16,8 +16,9 @@
             <th>unique number</th>
             <th>price</th>
             <th>link</th>
-            <th>delete</th>
-            <th>copy</th>
+            <th sec:authorize="hasRole('ROLE_SALE_USER')">delete</th>
+            <th sec:authorize="hasRole('ROLE_SALE_USER')">copy</th>
+            <th sec:authorize="hasRole('ROLE_CUSTOMER_USER')">to order</th>
         </tr>
         <tr th:each="item:${itemPage.items}">
             <td th:text="${item.name}"></td>
@@ -26,11 +27,14 @@
             <td>
                 <a th:href="@{/items/show-item-by-id/(id=${item.id})}"><span>More details</span></a>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ROLE_SALE_USER')">
                 <a th:href="@{/items/delete-item-by-id/(id=${item.id})}"><span>Delete this item</span></a>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ROLE_SALE_USER')">
                 <a th:href="@{/items/copy-item/(id=${item.id})}"><span>Copy this item</span></a>
+            </td>
+            <td sec:authorize="hasRole('ROLE_CUSTOMER_USER')">
+                <a th:href="@{/items/add-item-to-order/(id=${item.id})}"><span>Order this item</span></a>
             </td>
         </tr>
     </table>
@@ -45,6 +49,7 @@
 <div>
     <button onclick="window.location.href='/logout'">Click to Log out!</button>
     <button onclick="window.location.href='/articles/get'">Go to articles page!</button>
+    <button onclick="window.location.href='/orders/show'">Go to orders page!</button>
 </div>
 </body>
 </html>

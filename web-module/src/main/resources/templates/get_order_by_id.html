@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Order page</title>
+</head>
+<body>
+<h1>Full order information</h1>
+<div sec:authorize="isAuthenticated()">
+    You are authenticated as <span sec:authentication="name"></span></div>
+<form action="#" th:action="@{/orders/show-order-by-id}" method="post">
+    <table border="1">
+        <tr>
+            <th>number of order</th>
+            <th>status</th>
+            <th>first name</th>
+            <th>last name</th>
+            <th>telephone</th>
+            <th>count of items</th>
+            <th>final price</th>
+            <th>update</th>
+        </tr>
+        <tr>
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.status}"></td>
+            <td th:text="${order.firstName}"></td>
+            <td th:text="${order.lastName}"></td>
+            <td th:text="${order.telephone}"></td>
+            <td th:text="${order.itemsCount}"></td>
+            <td th:text="${order.finalPrice}"></td>
+            <td>
+                <a th:href="@{/orders/update-status/(id=${order.id})}"><span>STATUS</span></a>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h2>Actual items for this order</h2>
+    <table border="1">
+        <tr>
+            <th>name</th>
+            <th>count</th>
+            <th>price</th>
+        </tr>
+        <tr th:each="item:${order.items}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.count}"></td>
+            <td th:text="${item.price}"></td>
+        </tr>
+    </table>
+    <tr>
+        <br>
+        <td>
+            <a th:href="@{/orders/show}">Back!</a>
+        </td>
+    </tr>
+</form>
+</body>
+</html>

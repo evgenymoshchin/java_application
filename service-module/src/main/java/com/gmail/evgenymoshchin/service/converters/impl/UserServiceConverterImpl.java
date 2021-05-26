@@ -46,12 +46,13 @@ public class UserServiceConverterImpl implements UserServiceConverter {
         user.setPatronymic(userDTO.getPatronymic());
         user.setUsername(userDTO.getUsername());
         if (Objects.nonNull(userDTO.getRole())) {
-            Role role = roleRepository.findByRoleByName(userDTO.getRole());
+            Role role = roleRepository.findRoleByName(userDTO.getRole());
             user.setRole(role);
         }
-        String generatedPassword = passwordService.generateRandomPassword();
+        String generatedPassword = "1111";
+//        String generatedPassword = passwordService.generateRandomPassword();
         user.setPassword(passwordEncoder.encode(generatedPassword));
-        mailService.sendEmail(userDTO.getUsername(), generatedPassword);
+//        mailService.sendEmail(userDTO.getUsername(), generatedPassword);
         return user;
     }
 }

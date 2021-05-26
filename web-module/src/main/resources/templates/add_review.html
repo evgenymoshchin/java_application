@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>New review page</title>
+</head>
+<h1>Add review</h1>
+<body>
+<div sec:authorize="isAuthenticated()">
+    You are authenticated as: <span sec:authentication="name"></span></div>
+<form action="#" th:action="@{/reviews/add}" th:object="${reviewDTO}" method="post">
+    <table>
+        <tr>
+            <td><b>Current date:</b>
+                <p th:text="${#temporals.format(localDate, 'dd-MM-yyyy')}"></p></td>
+        </tr>
+        <tr>
+            <td><b>Enter your review:</b><br>
+                <label>
+                    <input type="text" th:field="*{reviewBody}">
+                </label></td>
+            <td th:if="${#fields.hasErrors('reviewBody')}" th:errors="*{reviewBody}">Name Error</td>
+        </tr>
+            <td>
+                <button type="submit">Add review!</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<button onclick="window.location.href='/logout'">Click to Log out!</button>
+</body>
+</html>

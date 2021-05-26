@@ -38,6 +38,11 @@ public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I
     }
 
     @Override
+    public void merge(T entity) {
+        entityManager.merge(entity);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<T> findAll() {
         String queryString = "from " + entityClass.getName();

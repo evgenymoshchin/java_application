@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserRoleById(Long id, RoleEnum roleEnum) {
         User user = userRepository.findById(id);
-        Role role = roleRepository.findByRoleByName(roleEnum);
+        Role role = roleRepository.findRoleByName(roleEnum);
         user.setRole(role);
     }
 
@@ -74,9 +74,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updatePasswordById(Long id) {
         User user = userRepository.findById(id);
-        String generatedPassword = passwordService.generateRandomPassword();
+//        String generatedPassword = passwordService.generateRandomPassword();
+        String generatedPassword = "1111";
         user.setPassword(passwordEncoder.encode(generatedPassword));
-        mailService.sendEmail(user.getUsername(), generatedPassword);
+//        mailService.sendEmail(user.getUsername(), generatedPassword);
         log.info(SUCCESSFUL_MAIL_MESSAGE, user.getUsername());
     }
 

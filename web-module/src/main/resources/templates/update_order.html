@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#"
+      th:action="@{/orders/update-status}" th:object="${orderShowDTO}" method="post">
+    <tr>
+        <td><b>Choose status:</b></td>
+        <td>
+            <label>
+                <input type="hidden" th:field="*{id}">
+            </label>
+        </td>
+        <td>
+            <label>
+                <select th:object="${statuses}" th:name="status">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status.name}"
+                            th:utext="${status.name}"></option>
+                </select>
+            </label>
+        </td>
+    </tr>
+    <input type="submit" value="Update Order">
+</form>
+</body>
+</html>

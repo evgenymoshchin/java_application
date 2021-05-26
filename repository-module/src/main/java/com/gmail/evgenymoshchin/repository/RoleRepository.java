@@ -4,6 +4,5 @@ import com.gmail.evgenymoshchin.repository.model.Role;
 import com.gmail.evgenymoshchin.repository.model.RoleEnum;
 
 public interface RoleRepository extends GenericRepository<Long, Role> {
-
-    Role findByRoleByName(RoleEnum roleEnum);
+    Role findRoleByName(RoleEnum roleEnum);
 }

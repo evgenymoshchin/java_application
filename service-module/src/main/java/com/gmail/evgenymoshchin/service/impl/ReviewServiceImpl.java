@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -72,6 +73,13 @@ public class ReviewServiceImpl implements ReviewService {
                 findReviewByIdUpdateVisible(id);
             }
         }
+    }
+
+    @Override
+    public void addReview(ReviewDTO reviewDTO, String username) {
+        Review review = reviewServiceConverter.convertDTOToReview(reviewDTO, username);
+        System.out.println(review);
+        reviewRepository.persist(review);
     }
 
     private void findReviewByIdUpdateVisible(Long id) {
