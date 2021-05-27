@@ -6,24 +6,17 @@
 </head>
 <h1>Add item to order page!</h1>
 <body>
-<form action="#" th:action="@{/items/add-item-to-order}" method="post">
+<form action="#" th:action="@{/items/add-item-to-order}" th:object="${itemCountDTO}" method="post">
     <table border="1" cellpadding="5" cellspacing="2">
         <tr>
-            <th>name</th>
-            <th>price</th>
-            <th>description</th>
-        </tr>
-        <td th:text="${item.name}"></td>
-        <td th:text="${item.price}"></td>
-        <td th:text="${item.description}"></td>
-        <tbody>
-        <tr>
-            <td>Count</td>
-            <td>
+            <td><b>Count of items:</b><br>
+                <td>
+
                 <label>
-                    <input minlength="1" maxlength="3" type="text" name="count" placeholder="1"/>
-                    <input type="hidden" th:field="*{item.id}">
+                    <input type="text" th:field="*{itemCount}">
+                    <input type="hidden" th:field="*{itemId}">
                 </label></td>
+            <td th:if="${#fields.hasErrors('itemCount')}" th:errors="*{itemCount}">Name Error</td>
         </tr>
         <tr>
             <td colspan="2">
@@ -31,7 +24,6 @@
                 <input type="reset" value="Reset"/>
             </td>
         </tr>
-        </tbody>
     </table>
 </form>
 </body>

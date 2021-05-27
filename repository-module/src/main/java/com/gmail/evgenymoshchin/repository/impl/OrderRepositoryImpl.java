@@ -34,8 +34,10 @@ public class OrderRepositoryImpl extends GenericRepositoryImpl<Long, Order> impl
 
     @Override
     public Order findOrderByUsername(String username) {
+        Long id = 1L;
         Query query = entityManager.createQuery(GET_ORDER_BY_USERNAME_QUERY);
         query.setParameter(USERNAME_VALUE, username);
+        query.setParameter("id", id);
         try {
             return (Order) query.getSingleResult();
         } catch (NoResultException e) {

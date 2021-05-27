@@ -22,12 +22,16 @@
                 </label></td>
             <td th:if="${#fields.hasErrors('reviewBody')}" th:errors="*{reviewBody}">Name Error</td>
         </tr>
-            <td>
-                <button type="submit">Add review!</button>
-            </td>
+        <td>
+            <button type="submit">Add review!</button>
+        </td>
         </tr>
     </table>
 </form>
+<button onclick="window.location.href='/items/get'">Go to items page!</button>
+<button onclick="window.location.href='/reviews/get'">Go to reviews page!</button>
+<button onclick="window.location.href='/orders/show'">Go to orders page!</button>
+<button onclick="window.location.href='/profiles/get'">Go to profile page!</button>
 <button onclick="window.location.href='/logout'">Click to Log out!</button>
 </body>
 </html>

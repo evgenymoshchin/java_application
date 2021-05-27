@@ -4,6 +4,7 @@ import com.gmail.evgenymoshchin.repository.ItemRepository;
 import com.gmail.evgenymoshchin.repository.model.Item;
 import com.gmail.evgenymoshchin.service.ItemService;
 import com.gmail.evgenymoshchin.service.converters.ItemServiceConverter;
+import com.gmail.evgenymoshchin.service.model.ItemCountDTO;
 import com.gmail.evgenymoshchin.service.model.ItemDTO;
 import com.gmail.evgenymoshchin.service.model.ItemPageDTO;
 import lombok.RequiredArgsConstructor;
@@ -81,5 +82,15 @@ public class ItemServiceImpl implements ItemService {
         copiedItem.setPrice(item.getPrice());
         copiedItem.setDescription(item.getDescription());
         itemRepository.persist(copiedItem);
+    }
+
+    @Override
+    @Transactional
+    public ItemCountDTO findItemCountById(Long id) {
+//        Item item = itemRepository.findById(id);
+//        ItemCountDTO itemCountDTO = new ItemCountDTO();
+//        itemCountDTO.setItemId(item.getId());
+//        itemCountDTO.setItemCount();
+        return null;
     }
 }

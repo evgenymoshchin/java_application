@@ -15,5 +15,5 @@ public interface OrderService {
 
     void updateStatusByOrderId(Long id, StatusEnum statusEnum);
 
-    void addItemToOrder(int itemsCount, Long itemId, String username);
+    void addItemToOrder(Integer itemsCount, Long itemId, String username);
 }

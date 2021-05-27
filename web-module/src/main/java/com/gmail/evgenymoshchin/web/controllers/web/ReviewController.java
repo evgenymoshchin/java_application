@@ -70,14 +70,8 @@ public class ReviewController {
         if (bindingResult.hasErrors()) {
             return "add_review";
         } else {
-            if (principal == null) {
-                String name = "Unauthorized";
-                reviewService.addReview(reviewDTO, name);
-            } else {
-                reviewService.addReview(reviewDTO, principal.getName());
-            }
-            return "redirect:/login";
+            reviewService.addReview(reviewDTO, principal.getName());
+            return REVIEWS_GET_REDIRECTION_URL;
         }
     }
-
 }

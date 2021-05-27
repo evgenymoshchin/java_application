@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void addItemToOrder(int itemsCount, Long itemId, String username) {
+    public void addItemToOrder(Integer itemsCount, Long itemId, String username) {
         Order orderFromDatabase = orderRepository.findOrderByUsername(username);
         if (orderFromDatabase.getStatus().getName() == StatusEnum.NEW) {
             Long orderId = orderFromDatabase.getId();
@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private void saveOrderItemByItemsCount(int itemsCount, Long itemId, Long orderId) {
+    private void saveOrderItemByItemsCount(Integer itemsCount, Long itemId, Long orderId) {
         for (int i = 1; i <= itemsCount; i++) {
             OrderItem orderItem = new OrderItem();
             orderItem.setItemId(itemId);

@@ -43,12 +43,6 @@ public class ReviewServiceConverterImpl implements ReviewServiceConverter {
         if (Objects.nonNull(userRepository.findByUsername(username))) {
             User user = userRepository.findByUsername(username);
             review.setUser(user);
-        } else {
-            User user = new User();
-            user.setLastName(username);
-            user.setFirstName(username);
-            user.setUsername(username);
-            review.setUser(user);
         }
         return review;
     }

@@ -37,7 +37,7 @@ public class ItemAPIController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addArticle(@RequestBody @Valid ItemDTO item, BindingResult bindingResult) {
+    public ResponseEntity<Void> addItem(@RequestBody @Valid ItemDTO item, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
@@ -48,7 +48,7 @@ public class ItemAPIController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteArticleById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteItemById(@PathVariable Long id) {
         itemService.removeItemById(id);
         log.info("Removed item with id {}", id);
         return new ResponseEntity<>(HttpStatus.OK);

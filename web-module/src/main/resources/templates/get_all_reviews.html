@@ -17,10 +17,10 @@
             <th>patronymic</th>
             <th>review</th>
             <th>date</th>
-            <th>show?</th>
-            <th>to delete</th>
+            <th sec:authorize="hasRole('ROLE_ADMINISTRATOR')">show?</th>
+            <th sec:authorize="hasRole('ROLE_ADMINISTRATOR')">to delete</th>
         </tr>
-        <tr th:each="review:${reviewPage.reviews}">
+        <tr sec:authorize="hasRole('ROLE_ADMINISTRATOR')" th:each="review:${reviewPage.reviews}">
             <td th:text="${review.firstName}"></td>
             <td th:text="${review.lastName}"></td>
             <td th:text="${review.patronymic}"></td>
@@ -38,6 +38,14 @@
                 <a th:href="@{/reviews/remove/{id}(id=${review.id})}"><span>Delete</span></a>
             </td>
         </tr>
+        <tr sec:authorize="hasRole('ROLE_CUSTOMER_USER')" th:each="review:${reviewPage.reviews}"
+            th:if="${review.isVisible eq true}">
+            <td th:text="${review.firstName}"></td>
+            <td th:text="${review.lastName}"></td>
+            <td th:text="${review.patronymic}"></td>
+            <td th:text="${review.reviewBody}"></td>
+            <td th:text="${review.date}"></td>
+        </tr>
     </table>
     <td th:if="${reviewPage.pagesCount gt 0}"
         th:each="pageNumber : ${reviewPage.numbersOfPages}">
@@ -47,15 +55,22 @@
     </td>
     <tr>
         <br>
-        <td>
+        <td sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
             <button type="submit">Change visibility!</button>
         </td>
     </tr>
 </form>
 <br>
+<div sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
+    <button onclick="window.location.href='/users/get'">Back to users page!</button>
+</div>
+<div sec:authorize="hasRole('ROLE_CUSTOMER_USER')">
+    <button onclick="window.location.href='/items/get'">Go to items page!</button>
+    <button onclick="window.location.href='/orders/show'">Go to orders page!</button>
+    <button onclick="window.location.href='/profiles/get'">Go to profile page!</button>
+</div>
 <div>
     <button onclick="window.location.href='/logout'">Click to Log out!</button>
-    <button onclick="window.location.href='/users/get'">Back to users page!</button>
 </div>
 </body>
 </html>
