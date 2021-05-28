@@ -4,6 +4,7 @@ import com.gmail.evgenymoshchin.repository.model.StatusEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 public class ItemShowDTO {
@@ -12,4 +13,5 @@ public class ItemShowDTO {
     private StatusEnum statusEnum;
     private Long count;
     private BigDecimal finalPrice;
+    private LocalDate date;
 }

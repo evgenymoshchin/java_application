@@ -1,6 +1,5 @@
 package com.gmail.evgenymoshchin.service;
 
-import com.gmail.evgenymoshchin.service.model.ItemCountDTO;
 import com.gmail.evgenymoshchin.service.model.ItemDTO;
 import com.gmail.evgenymoshchin.service.model.ItemPageDTO;
 
@@ -18,6 +17,4 @@ public interface ItemService {
     void removeItemById(Long id);
 
     void copyItemById(Long id);
-
-    ItemCountDTO findItemCountById(Long id);
 }

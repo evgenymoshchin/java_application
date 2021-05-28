@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,8 +28,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
-    @Column(name = "final_price")
-    private BigDecimal finalPrice;
+    @Column(name = "created_by")
+    private LocalDate createdBy;
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.MERGE,

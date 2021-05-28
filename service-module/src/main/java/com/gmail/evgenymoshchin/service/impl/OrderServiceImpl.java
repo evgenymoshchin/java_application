@@ -18,8 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -30,6 +31,7 @@ import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPage
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+    public static final int ONE_VALUE = 1;
     private final OrderRepository orderRepository;
     private final OrderServiceConverter converter;
     private final StatusRepository statusRepository;
@@ -51,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }
-//        orderDTOS.sort(Comparator.comparing(ArticleDTO::getDate).reversed());
+        itemShowDTOS.sort(Comparator.comparing(ItemShowDTO::getDate).reversed());
         itemShowPage.getItems().addAll(itemShowDTOS);
         Long countOfOrders = orderRepository.getCount();
         itemShowPage.setPagesCount(countOfOrders);
@@ -85,20 +87,21 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id);
         Status status = statusRepository.findStatusByName(statusEnum);
         order.setStatus(status);
+//        throw new Service exception order with id does not exist
     }
 
     @Override
     @Transactional
     public void addItemToOrder(Integer itemsCount, Long itemId, String username) {
         Order orderFromDatabase = orderRepository.findOrderByUsername(username);
-        if (orderFromDatabase.getStatus().getName() == StatusEnum.NEW) {
+        if (Objects.nonNull(orderFromDatabase) && orderFromDatabase.getStatus().getName().equals(StatusEnum.NEW)) {
             Long orderId = orderFromDatabase.getId();
             saveOrderItemByItemsCount(itemsCount, itemId, orderId);
         } else {
             Order order = new Order();
             order.setStatus(statusRepository.findStatusByName(StatusEnum.NEW));
             order.setUser(userRepository.findByUsername(username));
-            order.setFinalPrice(BigDecimal.ZERO);
+            order.setCreatedBy(LocalDate.now());
             orderRepository.persist(order);
             Long orderId = order.getId();
             saveOrderItemByItemsCount(itemsCount, itemId, orderId);
@@ -106,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void saveOrderItemByItemsCount(Integer itemsCount, Long itemId, Long orderId) {
-        for (int i = 1; i <= itemsCount; i++) {
+        for (int i = ONE_VALUE; i <= itemsCount; i++) {
             OrderItem orderItem = new OrderItem();
             orderItem.setItemId(itemId);
             orderItem.setOrderId(orderId);

@@ -46,7 +46,10 @@ public class OrderController {
     }
 
     @GetMapping("/update-status")
-    public String getUpdateStatusPage(@RequestParam Long id, Model model, OrderShowDTO orderShowDTO) {
+    public String getUpdateStatusPage(@RequestParam Long id, Model model) {
+        OrderShowDTO orderShowDTO = orderService.findOrderWithItemsByOrderId(id);
+        model.addAttribute("orderShowDTO", orderShowDTO);
+        System.out.println(orderShowDTO.getStatus() + "***********************************");
         model.addAttribute("statuses", statusService.findAll());
         return "update_order";
     }

@@ -76,9 +76,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void addReview(ReviewDTO reviewDTO, String username) {
+    public ReviewDTO addReview(ReviewDTO reviewDTO, String username) {
         Review review = reviewServiceConverter.convertDTOToReview(reviewDTO, username);
         reviewRepository.persist(review);
+        return reviewServiceConverter.convertReviewToDTO(review);
     }
 
     private void findReviewByIdUpdateVisible(Long id) {

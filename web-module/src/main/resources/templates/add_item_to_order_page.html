@@ -13,7 +13,7 @@
                 <td>
 
                 <label>
-                    <input type="text" th:field="*{itemCount}">
+                    <input type="number" th:field="*{itemCount}">
                     <input type="hidden" th:field="*{itemId}">
                 </label></td>
             <td th:if="${#fields.hasErrors('itemCount')}" th:errors="*{itemCount}">Name Error</td>

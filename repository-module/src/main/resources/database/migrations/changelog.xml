@@ -238,7 +238,7 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>/>
             </column>
-            <column name="final_price" type="DECIMAL(9,3)">
+            <column name="created_by" type="date">
                 <constraints nullable="false"/>
             </column>
             <column name="status_id" type="BIGINT">

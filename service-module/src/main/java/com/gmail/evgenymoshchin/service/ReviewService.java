@@ -12,5 +12,5 @@ public interface ReviewService {
 
     void changeVisibilityByIds(List<Long> selectedIds);
 
-    void addReview(ReviewDTO reviewDTO, String username);
+    ReviewDTO addReview(ReviewDTO reviewDTO, String username);
 }

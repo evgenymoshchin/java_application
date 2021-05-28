@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.GET_ITEMS_REDIRECTION_URL;
@@ -68,8 +69,7 @@ public class ItemController {
     }
 
     @PostMapping("/add-item-to-order")
-    public String AddItemToOrder(
-            ItemCountDTO itemCountDTO,
+    public String AddItemToOrder(@Valid ItemCountDTO itemCountDTO,
             BindingResult bindingResult,
             Principal principal) {
         if (bindingResult.hasErrors()) {

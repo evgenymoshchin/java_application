@@ -37,7 +37,8 @@ class ArticleServiceImplTest {
     @Test
     void shouldReturnArticlesList() {
         ArticleDTO articleDTO = new ArticleDTO();
-        articleDTO.setId(1L);
+        Long id = 1L;
+        articleDTO.setId(id);
         Article article = new Article();
 
         when(articleRepository.findAll()).thenReturn(Collections.singletonList(article));
@@ -46,5 +47,18 @@ class ArticleServiceImplTest {
         List<ArticleDTO> articles = articleService.findAll();
 
         assertEquals(articles.get(0).getId(), articleDTO.getId());
+    }
+
+    @Test
+    void shouldFindArticleById() {
+        ArticleDTO articleDTO = new ArticleDTO();
+        Long id = 1L;
+        Article article = new Article();
+        article.setId(id);
+
+        when(articleRepository.findById(id)).thenReturn(article);
+        when(converter.convertArticleToDTO(article)).thenReturn(articleDTO);
+
+        assertEquals(articleService.findArticleById(article.getId()), articleDTO);
     }
 }

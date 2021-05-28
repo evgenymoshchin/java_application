@@ -37,7 +37,8 @@ class ItemServiceImplTest {
     @Test
     void shouldReturnItemsList() {
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setId(1L);
+        Long id = 1L;
+        itemDTO.setId(id);
         Item item = new Item();
 
         when(itemRepository.findAll()).thenReturn(Collections.singletonList(item));
@@ -46,5 +47,18 @@ class ItemServiceImplTest {
         List<ItemDTO> items = itemService.getItems();
 
         assertEquals(items.get(0).getId(), itemDTO.getId());
+    }
+
+    @Test
+    void shouldFindItemById() {
+        ItemDTO itemDTO = new ItemDTO();
+        Long id = 1L;
+        Item item = new Item();
+        item.setId(id);
+
+        when(itemRepository.findById(id)).thenReturn(item);
+        when(converter.convertItemToDTO(item)).thenReturn(itemDTO);
+
+        assertEquals(itemService.findItemById(item.getId()), itemDTO);
     }
 }
