@@ -9,8 +9,10 @@ import com.gmail.evgenymoshchin.repository.model.Order;
 import com.gmail.evgenymoshchin.repository.model.OrderItem;
 import com.gmail.evgenymoshchin.repository.model.Status;
 import com.gmail.evgenymoshchin.repository.model.StatusEnum;
+import com.gmail.evgenymoshchin.service.ItemService;
 import com.gmail.evgenymoshchin.service.OrderService;
 import com.gmail.evgenymoshchin.service.converters.OrderServiceConverter;
+import com.gmail.evgenymoshchin.service.exception.ServiceException;
 import com.gmail.evgenymoshchin.service.model.ItemShowDTO;
 import com.gmail.evgenymoshchin.service.model.ItemShowPageDTO;
 import com.gmail.evgenymoshchin.service.model.OrderShowDTO;
@@ -25,14 +27,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.gmail.evgenymoshchin.service.constants.ExceptionConstants.ONE_VALUE;
+import static com.gmail.evgenymoshchin.service.constants.ExceptionConstants.ORDER_NOT_FOUND_MESSAGE;
 import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    public static final int ONE_VALUE = 1;
     private final OrderRepository orderRepository;
+    private final ItemService itemService;
     private final OrderServiceConverter converter;
     private final StatusRepository statusRepository;
     private final UserRepository userRepository;
@@ -66,7 +70,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderShowDTO findOrderWithItemsByOrderId(Long id) {
         Order order = orderRepository.findById(id);
-        return converter.convertOrderToOrderShowDTO(order);
+        if (Objects.nonNull(order)) {
+            return converter.convertOrderToOrderShowDTO(order);
+        } else {
+            throw new ServiceException(String.format(ORDER_NOT_FOUND_MESSAGE, id));
+        }
     }
 
     @Override
@@ -85,9 +93,12 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void updateStatusByOrderId(Long id, StatusEnum statusEnum) {
         Order order = orderRepository.findById(id);
-        Status status = statusRepository.findStatusByName(statusEnum);
-        order.setStatus(status);
-//        throw new Service exception order with id does not exist
+        if (Objects.nonNull(order)) {
+            Status status = statusRepository.findStatusByName(statusEnum);
+            order.setStatus(status);
+        } else {
+            throw new ServiceException(String.format(ORDER_NOT_FOUND_MESSAGE, id));
+        }
     }
 
     @Override
@@ -108,12 +119,18 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private void saveOrderItemByItemsCount(Integer itemsCount, Long itemId, Long orderId) {
+    private void saveOrderItemByItemsCount(Integer itemsCount, Long itemId, Long orderId) throws ServiceException {
         for (int i = ONE_VALUE; i <= itemsCount; i++) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setItemId(itemId);
-            orderItem.setOrderId(orderId);
-            orderItemRepository.persist(orderItem);
+            if (itemExist(itemId)) {
+                orderItem.setItemId(itemId);
+                orderItem.setOrderId(orderId);
+                orderItemRepository.persist(orderItem);
+            }
         }
+    }
+
+    private boolean itemExist(Long itemId) {
+        return itemService.findItemById(itemId) != null;
     }
 }

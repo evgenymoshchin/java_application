@@ -5,6 +5,7 @@ import com.gmail.evgenymoshchin.service.OrderService;
 import com.gmail.evgenymoshchin.service.StatusService;
 import com.gmail.evgenymoshchin.service.model.ItemShowPageDTO;
 import com.gmail.evgenymoshchin.service.model.OrderShowDTO;
+import com.gmail.evgenymoshchin.service.model.StatusDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_SIZE_VALUE;
 import static com.gmail.evgenymoshchin.web.constants.ControllersConstants.DEFAULT_PAGE_VALUE;
@@ -49,8 +52,9 @@ public class OrderController {
     public String getUpdateStatusPage(@RequestParam Long id, Model model) {
         OrderShowDTO orderShowDTO = orderService.findOrderWithItemsByOrderId(id);
         model.addAttribute("orderShowDTO", orderShowDTO);
-        System.out.println(orderShowDTO.getStatus() + "***********************************");
-        model.addAttribute("statuses", statusService.findAll());
+        List<StatusDTO> statuses = statusService.findAll();
+        statuses.removeIf(status -> status.getName().equals(orderShowDTO.getStatus()));
+        model.addAttribute("statuses", statuses);
         return "update_order";
     }
 

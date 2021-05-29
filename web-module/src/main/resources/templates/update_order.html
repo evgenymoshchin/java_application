@@ -18,7 +18,7 @@
             <label>
                 <select th:object="${statuses}" th:name="status">
                     <option th:text="${orderShowDTO.status}"></option>
-                    <option th:each="status : ${statuses}" th:if="${status} != ${orderShowDTO.status}"
+                    <option th:each="status : ${statuses}"
                             th:value="${status.name}"
                             th:utext="${status.name}"></option>
                 </select>

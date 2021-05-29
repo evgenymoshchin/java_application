@@ -2,6 +2,7 @@ package com.gmail.evgenymoshchin.web.exception.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gmail.evgenymoshchin.service.exception.ServiceException;
 import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,7 +19,21 @@ public class APIExceptionHandler {
     private final ObjectMapper objectMapper;
 
     @ExceptionHandler(UserAlreadyExistException.class)
-    public String handleException(HttpServletRequest request, UserAlreadyExistException exception) throws JsonProcessingException {
+    public String handleUserAlreadyExistException(HttpServletRequest request, UserAlreadyExistException exception) throws JsonProcessingException {
+        request.setAttribute("exception", exception.getMessage());
+        log.error(exception.getMessage(), exception);
+        return objectMapper.writeValueAsString(exception);
+    }
+
+    @ExceptionHandler(ServiceException.class)
+    public String handleServiceException(HttpServletRequest request, ServiceException exception) throws JsonProcessingException {
+        request.setAttribute("exception", exception.getMessage());
+        log.error(exception.getMessage(), exception);
+        return objectMapper.writeValueAsString(exception);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String handleAllException(HttpServletRequest request, Exception exception) throws JsonProcessingException {
         request.setAttribute("exception", exception.getMessage());
         log.error(exception.getMessage(), exception);
         return objectMapper.writeValueAsString(exception);
