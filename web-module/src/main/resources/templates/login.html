@@ -3,37 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
-<h1>Login page!</h1>
 <body>
-<form method="post" action="#" th:action="@{/login}">
-    <table border="1" cellpadding="5" cellspacing="2">
-        <thead>
-        <tr>
-            <th colspan="2">Login please!</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Email</td>
-            <td><label>
-                <input minlength="3" maxlength="20" type="text" name="username" required/>
-            </label></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><label>
-                <input minlength="3" maxlength="20" type="password" name="password" required/>
-            </label></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Login!"/>
-                <input type="reset" value="Reset"/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<form method="post" class="container-sm" action="#" th:action="@{/login}">
+    <h2>Login please!</h2>
+    <div class="col">
+        <div class="col-sm-2">
+            <label for="username" class="form-label"><b>Email:</b></label>
+            <input type="email" minlength="3" maxlength="20" name="username" id="username" required
+                   placeholder="name@gmail.com" class="form-control input-sm">
+        </div>
+        <div class="col-sm-2">
+            <label for="pw" class="form-label"><b>Password:</b></label>
+            <input type="password" minlength="3" maxlength="20" name="password" id="pw" required
+                   placeholder="password" class="form-control">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="reset" class="btn btn-primary">Reset</button>
+    </div>
 </form>
+<script th:src="@{/js/bootstrap.js}"></script>
 </body>
 </html>

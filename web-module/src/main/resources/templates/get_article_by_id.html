@@ -4,19 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Article page</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
-<h1>Full article</h1>
 <body>
-<form action="#" th:action="@{/articles/show-article-by-id}" method="post">
-    <table border="1">
+<form action="#" class="container" th:action="@{/articles/show-article-by-id}" method="post">
+    <h3>Full article information</h3>
+    <div sec:authorize="isAuthenticated()">
+        You are authenticated as <span sec:authentication="name"></span></div>
+    <table class="table table-condensed">
+        <thead>
         <tr>
             <th>date</th>
+            <th>title</th>
+            <th>article body</th>
             <th>name</th>
-            <th>article</th>
-            <th>firstName</th>
-            <th>lastName</th>
+            <th>surname</th>
             <th sec:authorize="hasRole('ROLE_SALE_USER')">link</th>
         </tr>
+        </thead>
+        <tbody>
         <tr>
             <td th:text="${article.date}"></td>
             <td th:text="${article.name}"></td>
@@ -27,16 +33,20 @@
                 <a th:href="@{/articles/update/(id=${article.id})}"><span>Update article</span></a>
             </td>
         </tr>
+        </tbody>
     </table>
     <br>
-    <h2>Actual comments for this article</h2>
-    <table border="1">
+    <h4>Actual comments for this article</h4>
+    <table class="table table-condensed">
+        <thead>
         <tr>
-            <th>firstName</th>
-            <th>lastName</th>
+            <th>name</th>
+            <th>surname</th>
             <th>date</th>
             <th>comment</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="comment:${comments}">
             <td th:text="${comment.firstName}"></td>
             <td th:text="${comment.lastName}"></td>
@@ -46,13 +56,16 @@
                 <a th:href="@{/articles/delete-comment/(id=${comment.id})}"><span>Delete comment</span></a>
             </td>
         </tr>
+        </tbody>
     </table>
-    <tr>
-        <br>
-        <td>
-            <a th:href="@{/articles/get}">Back!</a>
-        </td>
-    </tr>
+    <br>
+    <button type="button" onclick="goBack()" class="btn btn-primary">Go Back</button>
 </form>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script th:src="@{/js/bootstrap.js}"></script>
 </body>
 </html>

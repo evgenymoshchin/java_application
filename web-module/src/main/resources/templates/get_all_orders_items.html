@@ -4,13 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Orders</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <a href="#" class="navbar-brand" th:href="@{/orders/show}">Orders</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav">
+            <li class="nav-item" sec:authorize="hasRole('ROLE_CUSTOMER_USER')">
+                <a href="#" th:href="@{/reviews/get}" class="nav-link">Reviews</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_CUSTOMER_USER')">
+                <a href="#" th:href="@{/profiles/get}" class="nav-link">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" th:href="@{/items/get}" class="nav-link">Items</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" th:href="@{/articles/get}" class="nav-link">Articles</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" th:href="@{/logout}" class="nav-link">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <body>
-<h1>List of orders</h1>
-<div sec:authorize="isAuthenticated()">
-    You are authenticated as <span sec:authentication="name"></span></div>
-<form th:action="@{/orders/show}">
-    <table border="1">
+<form action="#" class="container-fluid" th:action="@{/orders/show}">
+    <h2>List of orders</h2>
+    <div sec:authorize="isAuthenticated()">
+        You are authenticated as <span sec:authentication="name"></span></div>
+    <table class="table table-condensed">
+        <thead>
         <tr>
             <th>number of order</th>
             <th>status</th>
@@ -19,6 +46,8 @@
             <th>final price</th>
             <th sec:authorize="hasRole('ROLE_SALE_USER')">link</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="item:${itemPage.items}">
             <td th:text="${item.orderId}"></td>
             <td th:text="${item.statusEnum}"></td>
@@ -29,6 +58,7 @@
                 <a th:href="@{/orders/show-order-by-id/(id=${item.orderId})}"><span>More details</span></a>
             </td>
         </tr>
+        </tbody>
     </table>
     <div th:if="${itemPage.pagesCount gt 0}"
          th:each="pageNumber : ${itemPage.numbersOfPages}">
@@ -37,12 +67,11 @@
            th:name="page" th:value="${pageNumber}"> </a>
     </div>
 </form>
-<br>
-<div>
-    <button onclick="window.location.href='/items/get'">Go to items page!</button>
-    <button onclick="window.location.href='/articles/get'">Go to articles page!</button>
-    <button onclick="window.location.href='/logout'">Click to Log out!</button>
-</div>
-<br>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script th:src="@{/js/bootstrap.js}"></script>
 </body>
 </html>

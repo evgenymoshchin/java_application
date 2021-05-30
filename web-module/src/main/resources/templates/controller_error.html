@@ -4,18 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Exception page</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
-<h1>We are already working with this error, please try again later!</h1>
-<div sec:authorize="isAuthenticated()">
+<div class="container-fluid">
+<h3>We are already working with this error, please try again later!</h3>
+<div class="col" sec:authorize="isAuthenticated()">
     You are authenticated as: <span sec:authentication="name"></span>
     <p><span th:text="${exception}">Error</span></p></div>
 <br>
-<button onclick="goBack()">Go Back</button>
+<button type="button" onclick="goBack()" class="btn btn-primary">Go Back</button>
+</div>
+</body>
 <script>
     function goBack() {
         window.history.back();
     }
 </script>
-</body>
+<script th:src="@{/js/bootstrap.js}"></script>
 </html>

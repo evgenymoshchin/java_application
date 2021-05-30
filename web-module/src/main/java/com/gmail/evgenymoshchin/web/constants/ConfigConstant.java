@@ -5,7 +5,7 @@ public interface ConfigConstant {
     String SALE_USER_URL = "/articles/get";
     String ACCESS_DENIED_URL = "/access-denied";
     String CUSTOMER_USER_URL = "/articles/get";
-    String SECURE_API_USER_URL = "/";
+    String SECURE_API_USER_URL = "/access-denied";
     String LOGIN_PAGE_URL = "/login";
     String USERS_CONTROLLER_MAPPING_URL = "/users/**";
     String DEFAULT_URL = "/";
