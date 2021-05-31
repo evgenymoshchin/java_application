@@ -4,7 +4,7 @@ public interface ExceptionConstants {
     String ORDER_NOT_FOUND_MESSAGE = "Order with id: %s was not found";
     int ONE_VALUE = 1;
     String ITEM_WAS_NOT_FOUND_MESSAGE = "Item with id: %s was not found";
-    String COPY_OF = "Copy of ";
+    String COPY_OF = " -C";
     String COMMENT_WAS_NOT_FOUND_MESSAGE = "Comment with id: %s was not found";
     String ARTICLE_WAS_NOT_FOUND_MESSAGE = "Article with id: %s was not found";
     String REVIEW_WAS_NOT_FOUND_MESSAGE = "Review with id: %s was not found";

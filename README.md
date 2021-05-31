@@ -59,12 +59,13 @@ This project created according to the following tasks:
 ![Example screenshot](./img/articles.jpg)
 ![Example screenshot](./img/article.jpg)
 ![Example screenshot](./img/items.jpg)
+![Example screenshot](./img/order.jpg)
 ![Example screenshot](./img/web coverage.jpg)
 ![Example screenshot](./img/service test coverage.jpg)
 
 
 ## Setup
-#####Steps:
+##### Steps:
 - On the command line:
 git clone https://github.com/evgenymoshchin/java_application.git
 - Inside IntelliJ IDEA In the main menu, choose File -> Open and select the java_application pom.xml. Click on the Open button.
@@ -74,6 +75,7 @@ git clone https://github.com/evgenymoshchin/java_application.git
 - Navigate to Application
 
   Visit http://localhost:8080/login in your browser.
+  Use email newman@gmail.com and pw 1111. 
 
 ## Project Status
 Project is: _complete_
@@ -81,6 +83,7 @@ Project is: _complete_
 ## Room for Improvement
 
 Room for improvement:
+- to add application on heroku domain 
 - to add UUID number instead of user-id, to improve the security of the application
 - to add categories of items
 - to add special order numbers which match items categories, to make an application more informative 
@@ -92,4 +95,4 @@ Room for improvement:
 
 
 ## Contact
-Created by evgeny.moshchin@gmail.com - feel free to contact me!
+Created by evgeny.moshchin@gmail.com -  to contact me!

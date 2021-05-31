@@ -99,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(id);
         if (Objects.nonNull(item)) {
             Item copiedItem = new Item();
-            copiedItem.setName(COPY_OF + item.getName());
+            copiedItem.setName(item.getName() + COPY_OF);
             copiedItem.setPrice(item.getPrice());
             copiedItem.setDescription(item.getDescription());
             itemRepository.persist(copiedItem);
