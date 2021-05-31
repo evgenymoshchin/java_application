@@ -91,10 +91,9 @@ public class UserServiceImpl implements UserService {
     public void updatePasswordById(Long id) {
         User user = userRepository.findById(id);
         if (Objects.nonNull(user)) {
-//        String generatedPassword = passwordService.generateRandomPassword();
-            String generatedPassword = "1111";
+        String generatedPassword = passwordService.generateRandomPassword();
             user.setPassword(passwordEncoder.encode(generatedPassword));
-//        mailService.sendEmail(user.getUsername(), generatedPassword);
+        mailService.sendEmail(user.getUsername(), generatedPassword);
             log.info(SUCCESSFUL_MAIL_MESSAGE, user.getUsername());
         } else {
             throw new ServiceException(String.format(USER_WAS_NOT_FOUND_MESSAGE, id));
