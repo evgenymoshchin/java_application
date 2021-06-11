@@ -3,29 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Item page</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
-<h1>Item information</h1>
 <body>
-<form action="#" th:action="@{/items/show-item-by-id}" method="post">
-    <table border="1">
+<form action="#" class="container" th:action="@{/items/show-item-by-id}" method="post">
+    <h3>Full item information</h3>
+    <table class="table table-condensed">
+        <thead>
         <tr>
             <th>name</th>
             <th>unique number</th>
             <th>price</th>
             <th>description</th>
         </tr>
-        <td th:text="${item.name}"></td>
-        <td th:text="${item.uuid}"></td>
-        <td th:text="${item.price}"></td>
-        <td th:text="${item.description}"></td>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.uuid}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.description}"></td>
+        </tr>
+        </tbody>
     </table>
-    </table>
-    <tr>
-        <br>
-        <td>
-            <a th:href="@{/items/get}">Back!</a>
-        </td>
-    </tr>
+    <br>
+    <button type="button" onclick="goBack()" class="btn btn-primary">Go Back</button>
 </form>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script th:src="@{/js/bootstrap.js}"></script>
 </body>
 </html>

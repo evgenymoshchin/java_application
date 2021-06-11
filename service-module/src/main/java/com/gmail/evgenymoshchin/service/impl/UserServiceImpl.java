@@ -9,6 +9,7 @@ import com.gmail.evgenymoshchin.service.MailService;
 import com.gmail.evgenymoshchin.service.PasswordService;
 import com.gmail.evgenymoshchin.service.UserService;
 import com.gmail.evgenymoshchin.service.converters.UserServiceConverter;
+import com.gmail.evgenymoshchin.service.exception.ServiceException;
 import com.gmail.evgenymoshchin.service.exception.UserAlreadyExistException;
 import com.gmail.evgenymoshchin.service.model.UserDTO;
 import com.gmail.evgenymoshchin.service.model.UserPageDTO;
@@ -21,7 +22,9 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
+import static com.gmail.evgenymoshchin.service.constants.ExceptionConstants.USER_WAS_NOT_FOUND_MESSAGE;
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.SUCCESSFUL_MAIL_MESSAGE;
 import static com.gmail.evgenymoshchin.service.constants.UserServiceConstants.USER_EXIST_EXCEPTION_MESSAGE_VALUE;
 import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void addUser(UserDTO userDTO) throws UserAlreadyExistException {
+    public void addUser(UserDTO userDTO) {
         if (emailExist(userDTO.getUsername())) {
             throw new UserAlreadyExistException(USER_EXIST_EXCEPTION_MESSAGE_VALUE
                     + userDTO.getUsername());
@@ -52,32 +55,49 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (Objects.nonNull(user)) {
+            return user;
+        } else {
+            throw new ServiceException(String.format(USER_WAS_NOT_FOUND_MESSAGE, username));
+        }
     }
 
     @Override
     @Transactional
     public void removeUserById(Long id) {
         User user = userRepository.findById(id);
-        userRepository.remove(user);
+        if (Objects.nonNull(user)) {
+            userRepository.remove(user);
+        } else {
+            throw new ServiceException(String.format(USER_WAS_NOT_FOUND_MESSAGE, id));
+        }
     }
 
     @Override
     @Transactional
     public void updateUserRoleById(Long id, RoleEnum roleEnum) {
         User user = userRepository.findById(id);
-        Role role = roleRepository.findByRoleByName(roleEnum);
-        user.setRole(role);
+        if (Objects.nonNull(user)) {
+            Role role = roleRepository.findRoleByName(roleEnum);
+            user.setRole(role);
+        } else {
+            throw new ServiceException(String.format(USER_WAS_NOT_FOUND_MESSAGE, id));
+        }
     }
 
     @Override
     @Transactional
     public void updatePasswordById(Long id) {
         User user = userRepository.findById(id);
+        if (Objects.nonNull(user)) {
         String generatedPassword = passwordService.generateRandomPassword();
-        user.setPassword(passwordEncoder.encode(generatedPassword));
+            user.setPassword(passwordEncoder.encode(generatedPassword));
         mailService.sendEmail(user.getUsername(), generatedPassword);
-        log.info(SUCCESSFUL_MAIL_MESSAGE, user.getUsername());
+            log.info(SUCCESSFUL_MAIL_MESSAGE, user.getUsername());
+        } else {
+            throw new ServiceException(String.format(USER_WAS_NOT_FOUND_MESSAGE, id));
+        }
     }
 
     @Override

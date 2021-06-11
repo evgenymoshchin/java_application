@@ -1,1 +1,2 @@
 DELETE FROM item;
+DELETE FROM user;

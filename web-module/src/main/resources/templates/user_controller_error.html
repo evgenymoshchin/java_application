@@ -11,6 +11,11 @@
     You are authenticated as: <span sec:authentication="name"></span>
     <p><span th:text="${exception}">Error</span></p></div>
 <br>
-<button onclick="window.location.href='/users/add'">Back to add user page!</button>
+<button onclick="goBack()">Go Back</button>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>

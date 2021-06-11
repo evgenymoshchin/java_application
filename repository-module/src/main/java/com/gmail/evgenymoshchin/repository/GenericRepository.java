@@ -7,6 +7,8 @@ public interface GenericRepository<I, T> {
 
     void remove(T entity);
 
+    void merge(T entity);
+
     T findById(I id);
 
     List<T> findAll();

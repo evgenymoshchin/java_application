@@ -127,7 +127,7 @@ class UserServiceConverterImplTest {
     void shouldConvertDTOToUserAndReturnCorrectRole() {
         Role role = new Role();
         role.setName(RoleEnum.ROLE_SALE_USER);
-        when(roleRepository.findByRoleByName(RoleEnum.ROLE_SALE_USER)).thenReturn(role);
+        when(roleRepository.findRoleByName(RoleEnum.ROLE_SALE_USER)).thenReturn(role);
         UserDTO userDTO = new UserDTO();
         userDTO.setRole(role.getName());
         User user = userServiceConverter.convertDTOtoUser(userDTO);

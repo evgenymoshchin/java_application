@@ -1,6 +1,8 @@
 package com.gmail.evgenymoshchin.repository.impl;
 
 import com.gmail.evgenymoshchin.repository.GenericRepository;
+import com.gmail.evgenymoshchin.repository.exception.RepositoryException;
+import lombok.extern.log4j.Log4j2;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,6 +10,7 @@ import javax.persistence.Query;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+@Log4j2
 public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
 
     @PersistenceContext
@@ -34,7 +37,17 @@ public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I
 
     @Override
     public T findById(I id) {
-        return entityManager.find(entityClass, id);
+        try {
+            return entityManager.find(entityClass, id);
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
+            throw new RepositoryException(entityClass.getName() + " with id " + id + " was not found");
+        }
+    }
+
+    @Override
+    public void merge(T entity) {
+        entityManager.merge(entity);
     }
 
     @Override

@@ -2,29 +2,32 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Update role</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
-<form action="#"
-      th:action="@{/users/update-role}" th:object="${userDTO}" method="post">
-    <tr>
-        <td><b>Choose role:</b></td>
-        <td>
-            <label>
-                <input type="hidden" th:field="*{id}">
-            </label>
-        </td>
-        <td>
-            <label>
-                <select th:object="${roles}" th:name="role">
-                    <option th:each="role : ${roles}"
-                            th:value="${role.name}"
-                            th:utext="${role.name}"></option>
-                </select>
-            </label>
-        </td>
-    </tr>
-    <input type="submit" value="Update User">
+<form action="#" class="container" th:action="@{/users/update-role}" th:object="${userDTO}" method="post">
+    <h1>Update user role page</h1>
+    <div>
+        <input type="hidden" th:field="*{id}">
+    </div>
+    <div>
+        <label><span>Choose role:</span>
+            <select class="form-select" th:object="${roles}" th:name="role">
+                <option th:each="role : ${roles}"
+                        th:value="${role.name}"
+                        th:utext="${role.name}"></option>
+            </select>
+        </label></div>
+    <br>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="button" onclick="goBack()" class="btn btn-primary">Go Back</button>
 </form>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script th:src="@{/js/bootstrap.js}"></script>
 </body>
 </html>

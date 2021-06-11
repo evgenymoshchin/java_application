@@ -25,6 +25,8 @@ public class UserProfileDTO {
     @Size(max = 40)
     @Pattern(regexp = REGEX_FOR_LATIN_CHARS, message = MESSAGE_WHEN_NOT_LATIN_CHARS)
     private String lastName;
+    @NotNull
+    @NotEmpty
     @Size(max = 40)
     @Pattern(regexp = REGEX_FOR_LATIN_CHARS, message = MESSAGE_WHEN_NOT_LATIN_CHARS)
     private String address;

@@ -29,7 +29,9 @@ class ReviewServiceConverterImplTest {
         Review review = new Review();
         Long testId = 1L;
         review.setId(testId);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertEquals(testId, reviewDTO.getId());
     }
 
@@ -38,7 +40,9 @@ class ReviewServiceConverterImplTest {
         Review review = new Review();
         String reviewBody = "body";
         review.setReviewBody(reviewBody);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertEquals(reviewBody, reviewDTO.getReviewBody());
     }
 
@@ -47,7 +51,9 @@ class ReviewServiceConverterImplTest {
         Review review = new Review();
         LocalDate date = LocalDate.now();
         review.setCreatedBy(date);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertEquals(date, reviewDTO.getDate());
     }
 
@@ -55,7 +61,9 @@ class ReviewServiceConverterImplTest {
     void shouldConvertReviewToDTOAndReturnCorrectBooleanVisible() {
         Review review = new Review();
         review.setIsVisible(true);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertTrue(reviewDTO.getIsVisible());
     }
 
@@ -64,10 +72,13 @@ class ReviewServiceConverterImplTest {
         User user = new User();
         Long id = 1L;
         user.setId(id);
-        when(userRepository.findById(id)).thenReturn(user);
         Review review = new Review();
         review.setUser(user);
+
+        when(userRepository.findById(id)).thenReturn(user);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertEquals(id, reviewDTO.getUserId());
     }
 
@@ -78,10 +89,13 @@ class ReviewServiceConverterImplTest {
         Long id = 1L;
         user.setId(id);
         user.setFirstName(firstName);
-        when(userRepository.findById(id)).thenReturn(user);
         Review review = new Review();
         review.setUser(user);
+
+        when(userRepository.findById(id)).thenReturn(user);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertEquals(firstName, reviewDTO.getFirstName());
     }
 
@@ -92,10 +106,13 @@ class ReviewServiceConverterImplTest {
         Long id = 1L;
         user.setId(id);
         user.setLastName(lastName);
-        when(userRepository.findById(id)).thenReturn(user);
         Review review = new Review();
         review.setUser(user);
+
+        when(userRepository.findById(id)).thenReturn(user);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertEquals(lastName, reviewDTO.getLastName());
     }
 
@@ -106,10 +123,45 @@ class ReviewServiceConverterImplTest {
         Long id = 1L;
         user.setId(id);
         user.setPatronymic(patronymic);
-        when(userRepository.findById(id)).thenReturn(user);
         Review review = new Review();
         review.setUser(user);
+
+        when(userRepository.findById(id)).thenReturn(user);
+
         ReviewDTO reviewDTO = reviewServiceConverter.convertReviewToDTO(review);
+
         Assertions.assertEquals(patronymic, reviewDTO.getPatronymic());
+    }
+
+    @Test
+    void shouldConvertDTOToReviewAndReturnName() {
+        ReviewDTO reviewDTO = new ReviewDTO();
+        String reviewBody = "review body";
+        reviewDTO.setReviewBody(reviewBody);
+
+        Review review = reviewServiceConverter.convertDTOToReview(reviewDTO, "");
+
+        Assertions.assertEquals(reviewBody, review.getReviewBody());
+    }
+
+    @Test
+    void shouldConvertDTOToReviewAndReturnIsVisible() {
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setIsVisible(false);
+
+        Review review = reviewServiceConverter.convertDTOToReview(reviewDTO, "");
+
+        Assertions.assertEquals(false, review.getIsVisible());
+    }
+
+    @Test
+    void shouldConvertDTOToReviewAndReturnCorrectDate() {
+        ReviewDTO reviewDTO = new ReviewDTO();
+        LocalDate date = LocalDate.now();
+        reviewDTO.setDate(date);
+
+        Review review = reviewServiceConverter.convertDTOToReview(reviewDTO, "");
+
+        Assertions.assertEquals(date, review.getCreatedBy());
     }
 }

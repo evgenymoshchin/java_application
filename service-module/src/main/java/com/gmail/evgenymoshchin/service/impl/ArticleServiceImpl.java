@@ -7,6 +7,7 @@ import com.gmail.evgenymoshchin.repository.model.Comment;
 import com.gmail.evgenymoshchin.service.ArticleService;
 import com.gmail.evgenymoshchin.service.ArticleSummaryMaker;
 import com.gmail.evgenymoshchin.service.converters.ArticleServiceConverter;
+import com.gmail.evgenymoshchin.service.exception.ServiceException;
 import com.gmail.evgenymoshchin.service.model.ArticleDTO;
 import com.gmail.evgenymoshchin.service.model.ArticlePageDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import static com.gmail.evgenymoshchin.service.constants.ExceptionConstants.ARTICLE_WAS_NOT_FOUND_MESSAGE;
+import static com.gmail.evgenymoshchin.service.constants.ExceptionConstants.COMMENT_WAS_NOT_FOUND_MESSAGE;
 import static com.gmail.evgenymoshchin.service.util.ServiceUtil.getNumbersOfPages;
 
 @Service
@@ -51,7 +54,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public ArticleDTO findArticleById(Long id) {
-        return converter.convertArticleToDTO(articleRepository.findById(id));
+        Article article = articleRepository.findById(id);
+        if (Objects.nonNull(article)) {
+            return converter.convertArticleToDTO(article);
+        } else {
+            throw new ServiceException(String.format(ARTICLE_WAS_NOT_FOUND_MESSAGE, id));
+        }
     }
 
     @Override
@@ -75,20 +83,28 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public void deleteArticleById(Long id) {
         Article article = articleRepository.findById(id);
-        articleRepository.remove(article);
+        if (Objects.nonNull(article)) {
+            articleRepository.remove(article);
+        } else {
+            throw new ServiceException(String.format(ARTICLE_WAS_NOT_FOUND_MESSAGE, id));
+        }
     }
 
     @Override
     @Transactional
     public void updateArticle(ArticleDTO articleDTO) {
         Article article = articleRepository.findById(articleDTO.getId());
-        article.setName(articleDTO.getName());
-        article.setCreatedBy(LocalDate.now());
-        String articleBody = articleDTO.getArticleBody();
-        if (Objects.nonNull(articleBody)) {
-            article.setArticleBody(articleBody);
-            String summary = summaryMaker.getSummaryOfArticle(articleBody);
-            article.setSummary(summary);
+        if (Objects.nonNull(article)) {
+            article.setName(articleDTO.getName());
+            article.setCreatedBy(LocalDate.now());
+            String articleBody = articleDTO.getArticleBody();
+            if (Objects.nonNull(articleBody)) {
+                article.setArticleBody(articleBody);
+                String summary = summaryMaker.getSummaryOfArticle(articleBody);
+                article.setSummary(summary);
+            }
+        } else {
+            throw new ServiceException(String.format(ARTICLE_WAS_NOT_FOUND_MESSAGE, articleDTO.getId()));
         }
     }
 
@@ -96,6 +112,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public void deleteArticleCommentById(Long commentId) {
         Comment comment = commentRepository.findById(commentId);
-        commentRepository.remove(comment);
+        if (Objects.nonNull(comment)) {
+            commentRepository.remove(comment);
+        } else {
+            throw new ServiceException(String.format(COMMENT_WAS_NOT_FOUND_MESSAGE, commentId));
+        }
     }
 }

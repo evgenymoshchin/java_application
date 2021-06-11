@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Add item to order</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+</head>
+<body>
+<form action="#" class="container" th:action="@{/items/add-item-to-order}" th:object="${itemCountDTO}" method="post">
+    <h3>Add item to order page</h3>
+    <div>
+        <input type="hidden" th:field="*{itemId}">
+    </div>
+    <div class="col-sm-2">
+        <label for="itemCount" class="form-label">Enter count of items:</label>
+        <input type="number" th:field="*{itemCount}" id="itemCount" placeholder="count"
+               class="form-control">
+        <div th:if="${#fields.hasErrors('itemCount')}" th:errors="*{itemCount}">Name Error</div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Order item!</button>
+    <button type="button" onclick="goBack()" class="btn btn-primary">Go Back</button>
+</form>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script th:src="@{/js/bootstrap.js}"></script>
+</body>
+</html>

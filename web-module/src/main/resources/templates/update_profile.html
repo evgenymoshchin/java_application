@@ -3,60 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Update profile page</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 </head>
-<h1>Profile</h1>
 <body>
-<form action="#" th:action="@{/profiles/update}" th:object="${userProfileDTO}" method="post">
-    <table>
-        <tr>
-            <td><b>Enter first name:</b><br>
-                <label>
-                    <input type="text" th:field="*{firstName}" th:placeholder="*{firstName}">
-                </label></td>
-            <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</td>
-        </tr>
-        <tr>
-            <td><b>Enter last name:</b><br>
-                <label>
-                    <input type="text" th:field="*{lastName}" th:placeholder="*{lastName}">
-                </label></td>
-            <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error
-            </td>
-        </tr>
-        <tr>
-            <td><b>Enter address:</b><br>
-                <label>
-                    <input type="text" th:field="*{address}" th:placeholder="*{address}">
-                </label></td>
-            <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Name Error</td>
-        </tr>
-        <tr>
-            <td><b>Enter email:</b><br>
-                <label>
-                    <input type="text" th:field="*{telephone}" th:placeholder="*{telephone}">
-                </label></td>
-            <td th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Name Error</td>
-        </tr>
-        <td>
-            <label>
-                <input type="hidden" th:field="*{id}">
-            </label>
-        </td>
-        <tr>
-            <td>
-                <button type="submit">Update!</button>
-            </td>
-            <td>
-                <a th:href="@{/profiles/update-password/{id}(id=${id})}"><span>Generate new password</span></a>
-            </td>
-        </tr>
-    </table>
-    <tr>
-        <br>
-        <td>
-            <a th:href="@{/profiles/get}">Back!</a>
-        </td>
-    </tr>
+<form class="container-fluid" action="#" th:action="@{/profiles/update}" th:object="${userProfileDTO}" method="post">
+    <h3>Update profile page</h3>
+    <div class="col-sm-2">
+        <label for="firstName" class="form-label">Enter first name:</label>
+        <input type="text" th:field="*{firstName}" id="firstName" th:placeholder="*{firstName}"
+               class="form-control">
+        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>
+    </div>
+    <div class="col-sm-2">
+        <label for="lastName" class="form-label">Enter last name:</label>
+        <input type="text" th:field="*{lastName}" id="lastName" th:placeholder="*{lastName}" class="form-control">
+        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</div>
+    </div>
+    <div class="col-sm-2">
+        <label for="address" class="form-label">Enter address:</label>
+        <input type="text" th:field="*{address}" id="address" th:placeholder="*{address}" class="form-control">
+        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Name Error</div>
+    </div>
+    <div class="col-sm-2">
+        <label for="telephone" class="form-label">Enter telephone:</label>
+        <input type="text" th:field="*{telephone}" id="telephone" th:placeholder="*{telephone}"
+               class="form-control">
+        <div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Name Error</div>
+    </div>
+    <div>
+        <input type="hidden" th:field="*{id}">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a class="btn btn-primary" href="#" th:href="@{/profiles/update-password/{id}(id=${id})}" role="button">New
+        password</a>
+    <button type="button" onclick="goBack()" class="btn btn-primary">Go Back</button>
 </form>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script th:src="@{/js/bootstrap.js}"></script>
 </body>
 </html>
