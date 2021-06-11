@@ -1,6 +1,5 @@
 # java_application
-> This is final course project. My java application is an online resource that includes a simple online store and a news section. The project uses 4 roles for users who have different access and capabilities
-> Live demo [_here_](https://www.example.com). <!-- If you have the project hosted somewhere, include the link here. -->
+> This is final course project. My java application is an online resource that includes a simple online store, and a news section. The project uses 4 roles for users who have different access and capabilities.
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -55,13 +54,13 @@ This project created according to the following tasks:
 
 
 ## Screenshots
-![Example screenshot](./img/users.jpg)
-![Example screenshot](./img/articles.jpg)
-![Example screenshot](./img/article.jpg)
-![Example screenshot](./img/items.jpg)
-![Example screenshot](./img/order.jpg)
-![Example screenshot](./img/web coverage.jpg)
-![Example screenshot](./img/service test coverage.jpg)
+![users](./img/users.jpg)
+![articles](./img/articles.jpg)
+![article](./img/article.jpg)
+![items](./img/items.jpg)
+![order](./img/order.jpg)
+![web](./img/web coverage.jpg)
+![service](./img/service test coverage.jpg)
 
 
 ## Setup
@@ -91,7 +90,7 @@ Room for improvement:
 
 ## Acknowledgements
 - This project was based on tasks from course Java EE IT Academy Minsk.
-- Many thanks to best JAVA EE trainer [Artsiom Peravoznikau](https://www.linkedin.com/in/artsiom-peravoznikau/), who gives me knowledge to make this project. 
+- Many thanks to Java trainer [Artsiom Peravoznikau](https://www.linkedin.com/in/artsiom-peravoznikau/), who gives me knowledge to make this project. 
 
 
 ## Contact
